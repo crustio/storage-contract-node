@@ -12,6 +12,20 @@ export interface Record {
   status: FileStatus;
 }
 
+export interface RecordShow {
+  customer: string;
+  merchant: string;
+  cid: string;
+  size: number;
+  token: string;
+  price: string;
+  chainType: string;
+  blockNumber: number;
+  txHash: string;
+  timestamp: number;
+  status: FileStatus;
+}
+
 export interface ElrondTimestamp {
   id: number;
   timestamp: number;
@@ -19,6 +33,8 @@ export interface ElrondTimestamp {
 
 export interface DbOperator {
   addRecord: (
+    customer: string,
+    merchant: string,
     cid: string,
     size: number,
     token: string,
@@ -28,6 +44,10 @@ export interface DbOperator {
     txHash: string,
     timestamp: number,
   ) => Promise<void>;
+  getRecordByType: (
+    status: string,
+    chainType: string,
+  ) => Promise<RecordShow[]>;
   getNewRecord: () => Promise<Record[]>;
   getOrderedRecord: () => Promise<Record[]>;
   getElrondLatestTimestamp: () => Promise<number>;

@@ -38,10 +38,12 @@ async function handleElrond(context: AppContext): Promise<void> {
           for (const event of tx.logs.events) {
             if (event.hasOwnProperty("identifier") && event["identifier"].startsWith("placeOrder")) {
               const eventObj = parseStorageEvent(event.data);
-              if (eventObj.node === ELROND_ACCOUNT) {
+              if (eventObj.merchant === ELROND_ACCOUNT) {
                 logger.info(`Add new Elrond task:`);
                 Object.entries(eventObj).forEach(([key, val]) => logger.info(`    ${key}:${val}`));
                 dbOps.addRecord(
+                  eventObj.customer,
+                  eventObj.merchant,
                   eventObj.cid,
                   parseInt(eventObj.size.toString()),
                   eventObj.token,
@@ -64,7 +66,7 @@ async function handleElrond(context: AppContext): Promise<void> {
 }
 
 export async function createMonitorElrondTask(context: AppContext) {
-  const elrondInterval = 5 * 1000;
+  const elrondInterval = 10 * 1000;
   return makeIntervalTask(
     elrondInterval,
     elrondInterval,

@@ -5,12 +5,15 @@ import { TRYOUT } from '../consts';
 import {
   FileStatus,
   Record,
+  RecordShow,
   ElrondTimestamp,
   DbOperator,
 } from '../types/database';
 
 export function createRecordOperator(db: Database): DbOperator {
   const addRecord = async (
+    customer: string,
+    merchant: string,
     cid: string,
     size: number,
     token: string,
@@ -23,9 +26,11 @@ export function createRecordOperator(db: Database): DbOperator {
     try {
       await db.run(
         'insert into record ' +
-          '(`cid`, `size`, `token`, `price`, `blockNumber`, `chainType`, `txHash`, `timestamp`, `tryout`, `status`)' +
-          ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+          '(`customer`, `merchant`, `cid`, `size`, `token`, `price`, `blockNumber`, `chainType`, `txHash`, `timestamp`, `tryout`, `status`)' +
+          ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
         [
+          customer,
+          merchant,
           cid,
           size,
           token,
@@ -44,6 +49,24 @@ export function createRecordOperator(db: Database): DbOperator {
         throw e;
       }
     }
+  };
+
+  const getRecordByType = async (
+    status: string,
+    chainType: string,
+  ): Promise<RecordShow[]> => {
+    let params: string[] = []; 
+    status === '' || params.push(`status = '${status}'`);
+    chainType === '' || params.push(`chainType = '${chainType}'`);
+    let where = "";
+    if (params.length > 0) {
+      where = `where ${params.join(' and ')}`;
+    }
+    const records = await db.all(
+      `select customer, merchant, cid, size, token, price, blockNumber, chainType, txHash, timestamp, status from record ${where} order by timestamp asc`,
+      [],
+    );
+    return records;
   };
 
   const getNewRecord = async (): Promise<Record[]> => {
@@ -75,7 +98,7 @@ export function createRecordOperator(db: Database): DbOperator {
 
   const updateStatus = async (
     id: number,
-    status: FileStatus
+    status: FileStatus,
   ): Promise<void> => {
     await db.run(
       `update record set status = ? where id = ? `,
@@ -92,6 +115,7 @@ export function createRecordOperator(db: Database): DbOperator {
 
   return {
     addRecord,
+    getRecordByType,
     getNewRecord,
     getOrderedRecord,
     getElrondLatestTimestamp,

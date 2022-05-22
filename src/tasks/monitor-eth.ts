@@ -45,19 +45,23 @@ export async function createMonitorETHTask(context: AppContext): Promise<Task> {
 
       // Receive an event when ANY transfer occurs
       StorageOrderContract.on("Order", async(
+        customer: string,
+        merchant: string,
         cid: string,
         size: number,
         price: number,
-        nodeAddress: string,
         event
       ) => {
-        if (ETH_ACCOUNT === nodeAddress) {
+        if (ETH_ACCOUNT === merchant) {
           logger.info("ADD new ETH task:");
+          logger.info(`  customer:${customer}`);
+          logger.info(`  merchant:${merchant}`);
           logger.info(`  cid:${cid}`);
           logger.info(`  size:${size}`);
           logger.info(`  price:${price}`);
-          logger.info(`  nodeAddress :${nodeAddress}`);
           dbOps.addRecord(
+            customer,
+            merchant,
             cid,
             size,
             "ETH",
@@ -72,24 +76,28 @@ export async function createMonitorETHTask(context: AppContext): Promise<Task> {
 
       // Receive an event when ANY transfer occurs
       StorageOrderContract.on("OrderInERC20", async (
+        customer: string,
+        merchant: string,
         cid: string,
         size: number,
         price: number,
-        tokenAddress: string,
-        nodeAddress:string,
+        token: string,
         event
       ) => {
-        if (ETH_ACCOUNT === nodeAddress) {
+        if (ETH_ACCOUNT === merchant) {
           logger.info("Add new ETH task:");
+          logger.info(`  customer:${customer}`);
+          logger.info(`  merchant:${merchant}`);
           logger.info(`  cid:${cid}`);
           logger.info(`  size:${size}`);
           logger.info(`  price:${price}`);
-          logger.info(`  tokenAddress:${tokenAddress}`);
-          logger.info(`  nodeAddress :${nodeAddress}`);
+          logger.info(`  token:${token}`);
           dbOps.addRecord(
+            customer,
+            merchant,
             cid,
             size,
-            tokenAddress,
+            token,
             price.toString(),
             event.blockNumber,
             "eth",

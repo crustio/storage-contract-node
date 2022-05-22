@@ -31,18 +31,17 @@ export async function createAPI(context: AppContext): Promise<Task> {
         }
         const route = url.pathname.substr(restfulHead.length);
         if (req.method === 'GET') {
-          if ('/order/new' === route) {
-            const records = await dbOps.getNewRecord();
-            resBody = JSON.stringify(records);
-          } else if ('/order/ordered' === route) {
-            const records = await dbOps.getOrderedRecord();
-            resBody = JSON.stringify(records);
+          // Do GET request
+          if ('/order' === route) {
+            const status = url.searchParams.get('status') || '';
+            const chainType = url.searchParams.get('chainType') || '';
+            resBody = await dbOps.getRecordByType(status, chainType);
           } else {
             resMsg = `Unknown request:${url.pathname}`;
             resCode = 404;
           }
         } else if (req.method === 'POST') {
-          // Do post request
+          // Do POST request
         } else {
           // Other type request
         }

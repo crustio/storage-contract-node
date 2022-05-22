@@ -46,3 +46,39 @@ API_PORT=8765
 ```
 yarn build && yarn start
 ```
+
+## API
+
+### /api/v0/order
+
+```
+curl -XGET http://localhost:8765/api/v0/order
+```
+
+Get new order information
+
+Arguments:
+1. status: optional, should be 'new' or 'ordered'
+1. chainType: optional, should be 'eth' or ' elrond'
+
+curl example:
+```
+curl 'http://localhost:8765/api/v0/order?status=ordered&chainType=eth'
+
+// Output:
+[
+  {
+    "customer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "merchant": "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199",
+    "cid": "QmfH5zLmBtptUxRSGWazaumGwSsCW3n6P164eRXpbFatmJ",
+    "size": 5246268,
+    "token": "0x821f3361D454cc98b7555221A06Be563a7E2E0A6",
+    "price": "3706",
+    "blockNumber": 14797355,
+    "chainType": "eth",
+    "txHash": "0x9005dd2689f42f2ab49a98f1c0e2d4dd64c0d346ec7a2ef9460f682fd2dad683",
+    "timestamp": 1652927711,
+    "status": "ordered"
+  }
+]
+```

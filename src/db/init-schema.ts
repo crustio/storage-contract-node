@@ -10,6 +10,14 @@ export async function createRecordTable(sequelize: QueryInterface) {
           allowNull: false,
           primaryKey: true,
         },
+        customer: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        merchant: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
         cid: {
           type: DataTypes.STRING,
           allowNull: false,

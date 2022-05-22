@@ -16,15 +16,15 @@ export default function parseStorageEvent(base64String: string): StorageEvent {
   }
 
   let res: StorageEvent = {
-    caller: "",
-    node: "",
+    customer: "",
+    merchant: "",
     cid: "",
     token: "",
     price: new BigNumber(0),
     size: new BigNumber(0),
   }
-  res.caller = bech32AddressFromBuffer(buf.subarray(paramSpec.caller.start, paramSpec.caller.end));
-  res.node = bech32AddressFromBuffer(buf.subarray(paramSpec.node.start, paramSpec.node.end));
+  res.customer = bech32AddressFromBuffer(buf.subarray(paramSpec.caller.start, paramSpec.caller.end));
+  res.merchant = bech32AddressFromBuffer(buf.subarray(paramSpec.node.start, paramSpec.node.end));
   res.cid = stringFromBuffer(buf.subarray(paramSpec.cid.start, paramSpec.cid.end));
   const { token, pos } = findTokenIdentifier(buf, paramSpec.cid.end + 4);
   res.token = token;

@@ -15,6 +15,6 @@ export const DB_PATH = process.env.DB_PATH as string;
 export const API_PORT = parseInt(process.env.API_PORT as string);
 export const TRYOUT = 10;
 export const STORAGE_ORDER_ABI = [
-  "event Order(string cid, uint size, uint price, address nodeAddress)",
-  "event OrderInERC20(string cid, uint size, uint price, address tokenAddress, address nodeAddress)"
+  "event Order(address customer, address merchant, string cid, uint size, uint price)",
+  "event OrderInERC20(address customer, address merchant, string cid, uint size, uint price, address token)"
 ]
