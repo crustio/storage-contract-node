@@ -3,6 +3,9 @@ import BigNumber from 'bignumber.js';
 import { logger } from './logger';
 import { StorageEvent } from '../types/event';
 
+const CID_V0_LENGTH = 46;
+const CID_V1_LENGTH = 59;
+
 const paramSpec = {
   caller: { start: 0, end: 32 },
   node: { start: 32, end: 64 },
@@ -25,13 +28,27 @@ export default function parseStorageEvent(base64String: string): StorageEvent {
   }
   res.customer = bech32AddressFromBuffer(buf.subarray(paramSpec.caller.start, paramSpec.caller.end));
   res.merchant = bech32AddressFromBuffer(buf.subarray(paramSpec.node.start, paramSpec.node.end));
-  res.cid = stringFromBuffer(buf.subarray(paramSpec.cid.start, paramSpec.cid.end));
-  const { token, pos } = findTokenIdentifier(buf, paramSpec.cid.end + 4);
+  const { cid, pos: cidEndPos } = findCid(buf, paramSpec.cid.start);
+  res.cid = cid;
+  const { token, pos: tokenEndPos } = findTokenIdentifier(buf, cidEndPos + 4);
   res.token = token;
-  const { price, size } = findPriceAndSize(buf, pos);
+  const { price, size } = findPriceAndSize(buf, tokenEndPos);
   res.price = price;
   res.size = size;
   return res;
+}
+
+const findCid = (buf: Buffer, startPos: number) => {
+  let endPos = startPos + CID_V0_LENGTH;
+  let cid = stringFromBuffer(buf.subarray(startPos, endPos));
+  if (cid.startsWith("ba")) {
+    endPos = startPos + CID_V1_LENGTH;
+    cid = stringFromBuffer(buf.subarray(startPos, endPos));
+  }
+  return {
+    cid: cid,
+    pos: endPos
+  }
 }
 
 const findPriceAndSize = (buf: Buffer, pos: number) => {

@@ -43,6 +43,13 @@ export function createRecordOperator(db: Database): DbOperator {
           'new',
         ],
       );
+      logger.info(`Add ${chainType} task successfully.`);
+      logger.info(`  customer:${customer}`);
+      logger.info(`  merchant:${merchant}`);
+      logger.info(`  cid:${cid}`);
+      logger.info(`  size:${size}`);
+      logger.info(`  price:${price}`);
+      logger.info(`  token:${token}`);
     } catch(e) {
       const err_code = JSON.parse(JSON.stringify(e)).code;
       if (err_code !== 'SQLITE_CONSTRAINT') {

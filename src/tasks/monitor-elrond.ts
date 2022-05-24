@@ -39,8 +39,8 @@ async function handleElrond(context: AppContext): Promise<void> {
             if (event.hasOwnProperty("identifier") && event["identifier"].startsWith("placeOrder")) {
               const eventObj = parseStorageEvent(event.data);
               if (eventObj.merchant === ELROND_ACCOUNT) {
-                logger.info(`Add new Elrond task:`);
-                Object.entries(eventObj).forEach(([key, val]) => logger.info(`    ${key}:${val}`));
+                //logger.info(`Add new Elrond task:`);
+                //Object.entries(eventObj).forEach(([key, val]) => logger.info(`    ${key}:${val}`));
                 dbOps.addRecord(
                   eventObj.customer,
                   eventObj.merchant,

@@ -53,12 +53,6 @@ export async function createMonitorETHTask(context: AppContext): Promise<Task> {
         event
       ) => {
         if (ETH_ACCOUNT === merchant) {
-          logger.info("ADD new ETH task:");
-          logger.info(`  customer:${customer}`);
-          logger.info(`  merchant:${merchant}`);
-          logger.info(`  cid:${cid}`);
-          logger.info(`  size:${size}`);
-          logger.info(`  price:${price}`);
           dbOps.addRecord(
             customer,
             merchant,
@@ -85,13 +79,6 @@ export async function createMonitorETHTask(context: AppContext): Promise<Task> {
         event
       ) => {
         if (ETH_ACCOUNT === merchant) {
-          logger.info("Add new ETH task:");
-          logger.info(`  customer:${customer}`);
-          logger.info(`  merchant:${merchant}`);
-          logger.info(`  cid:${cid}`);
-          logger.info(`  size:${size}`);
-          logger.info(`  price:${price}`);
-          logger.info(`  token:${token}`);
           dbOps.addRecord(
             customer,
             merchant,
