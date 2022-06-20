@@ -21,8 +21,8 @@ to start a watcher for order and wait for chain synchronization complete. You ca
 ```
 CRUST_SEEDS=""
 CRUST_CHAIN_URL="ws://localhost:19944"
-ETH_ENDPOINT_URL="http://localhost:8545"
-ETH_STORAGE_CONTRACT_ADDRESS=""
+ETH_ENDPOINT_URL="<ether_mainnet_json_rpc>"
+ETH_STORAGE_CONTRACT_ADDRESS="0x6e9469673257e21b3e75bb9292c9ab009bc481d4"
 ETH_ACCOUNT=""
 ELROND_API_URL="https://api.elrond.com"
 ELROND_STORAGE_CONTRACT_ADDRESS="erd1qqqqqqqqqqqqqpgq9z44nz6t6nheyflvfh94syzky84gk0d8j3vss49tnh"
@@ -33,8 +33,8 @@ API_PORT=8765
 
 1. CRUST_SEEDS: Crust network account seeds
 1. CRUST_CHAIN_URL: Crust network address, you can use the watcher started in previous step which is '***ws://localhost:19944***'
-1. ETH_ENDPOINT_URL: monitored chain endpoint address
-1. ETH_STORAGE_CONTRACT_ADDRESS: ETH storage contract address on ETH_ENDPOINT_URL
+1. ETH_ENDPOINT_URL: Ether mainnet JSON RCP url, follow [this link](https://infura.io/) to obtain a free one
+1. ETH_STORAGE_CONTRACT_ADDRESS: ETH storage contract address on ETH_ENDPOINT_URL which is ***0x6e9469673257e21b3e75bb9292c9ab009bc481d4***
 1. ETH_ACCOUNT: current node's ETH account to receive users' payment
 1. ELROND_API_URL: Elrond api url which is ***https://api.elrond.com***
 1. ELROND_STORAGE_CONTRACT_ADDRESS: Elrond storage contract address which is ***erd1qqqqqqqqqqqqqpgq9z44nz6t6nheyflvfh94syzky84gk0d8j3vss49tnh***
