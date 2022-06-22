@@ -27,6 +27,7 @@ ETH_ACCOUNT=""
 ELROND_API_URL="https://api.elrond.com"
 ELROND_STORAGE_CONTRACT_ADDRESS="erd1qqqqqqqqqqqqqpgq9z44nz6t6nheyflvfh94syzky84gk0d8j3vss49tnh"
 ELROND_ACCOUNT=""
+SHADOW_SUBSCAN_URL="https://shadow.webapi.subscan.io"
 DB_PATH="/opt/crust/pinning-node"
 API_PORT=8765
 ```
@@ -41,6 +42,10 @@ API_PORT=8765
 1. ELROND_ACCOUNT: current node's Elrond account to receive users' payment
 1. DB_PATH: pinning node datbase path, default is ***/opt/crust/pinning-node***
 1. API_PORT: API service port, default is ***8765***
+1. SHADOW_SUBSCAN_URL: Crust shadow url, default is ***https://shadow.webapi.subscan.io***
+1. ETH_TASK_ENABLE: optional, boolean, set to false to disable ETH monitor task, default is true
+1. ELROND_TASK_ENABLE: optional, boolean, set to false to disable ELROND monitor task, default is true
+1. XSTORAGE_TASK_ENABLE: optional, boolean, set to false to disable XSTORAGE monitor task, default is true
 
 ### Start service
 ```

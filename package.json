@@ -36,6 +36,7 @@
     "ipfs-http-client": "^56.0.1",
     "lodash": "^4.17.20",
     "multiformats": "^9.6.4",
+    "node-fetch": "^2.0.0",
     "sequelize": "^6.6.5",
     "sqlite": "^4.0.23",
     "sqlite3": "^5.0.2",

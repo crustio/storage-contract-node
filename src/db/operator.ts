@@ -98,7 +98,18 @@ export function createRecordOperator(db: Database): DbOperator {
       ["elrond"],
     );
     if (records.length > 0) {
-      return records[0].blockNumber + 1;
+      return records[0].blockNumber;
+    }
+    return 0;
+  };
+
+  const getXStorageLatestBlkNum = async (): Promise<number> => {
+    const records = await db.all(
+      'select id, blockNumber from record where chainType = ? order by blockNumber desc',
+      ["xstorage"],
+    );
+    if (records.length > 0) {
+      return records[0].blockNumber;
     }
     return 0;
   };
@@ -126,6 +137,7 @@ export function createRecordOperator(db: Database): DbOperator {
     getNewRecord,
     getOrderedRecord,
     getElrondLatestTimestamp,
+    getXStorageLatestBlkNum,
     updateStatus,
     increaseTryout,
   };
