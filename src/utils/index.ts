@@ -27,7 +27,7 @@ export function sleep(microsec: number) {
  * @returns boolean
  */
 export function checkCid(cid: string) {
-  return cid.length === 46 && cid.substr(0, 2) === 'Qm';
+  return (cid.length === 46 && cid.substr(0, 2) === 'Qm') || (cid.length === 59 && cid.substr(0, 2) === 'ba');
 }
 
 /**
