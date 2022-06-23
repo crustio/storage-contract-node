@@ -1,7 +1,9 @@
 type FileStatus =
   | 'new'
   | 'ordered'
-  | 'pinned';
+  | 'pinned'
+  | 'failed'
+  | 'tryout';
 
 export interface Record {
   id: number;
@@ -53,5 +55,5 @@ export interface DbOperator {
   getElrondLatestTimestamp: () => Promise<number>;
   getXStorageLatestBlkNum: () => Promise<number>;
   updateStatus: (id: number, status: FileStatus) => Promise<void>;
-  increaseTryout: (id: number) => Promise<void>;
+  increaseTryout: (id: number, step = 1) => Promise<void>;
 }

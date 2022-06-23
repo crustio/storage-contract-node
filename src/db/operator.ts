@@ -124,10 +124,10 @@ export function createRecordOperator(db: Database): DbOperator {
     );
   };
 
-  const increaseTryout = async (id: number): Promise<void> => {
+  const increaseTryout = async (id: number, step = 1): Promise<void> => {
     await db.run(
-      `update record set tryout = tryout + 1 where id = ?`,
-      [id],
+      `update record set tryout = tryout + ?, status = CASE WHEN tryout + ? >= ? THEN 'tryout' ELSE 'new' END where id = ?`,
+      [step, step, TRYOUT, id],
     )
   }
 

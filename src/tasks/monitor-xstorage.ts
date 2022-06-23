@@ -23,7 +23,7 @@ async function doFetch(data: any) {
   );
 }
 
-async function fetchOrder(latestBlk: number) {
+async function fetchOrder(fetchedBlk: number) {
   try {
     let postData = {
       "row": 50,
@@ -32,7 +32,7 @@ async function fetchOrder(latestBlk: number) {
       "address": "",
       "module": "xstorage",
       "call": "place_storage_order",
-      "block_range": latestBlk === 0 ? "" : `${latestBlk}-${latestBlk+fetchStep}`,
+      "block_range": fetchedBlk === 0 ? "" : `${fetchedBlk}-${fetchedBlk+fetchStep}`,
     };
     const res = await doFetch(postData);
     if (res.status !== 200) {
@@ -53,21 +53,15 @@ async function fetchOrder(latestBlk: number) {
       return [];
     }
 
+    // Get order
     const metaJson = await metaRes.json();
-    const lastBlk = metaJson.data.blockNum;
-    let startBlk = latestBlk + fetchStep;
-
-    // Return if current block is the latest
-    if (startBlk >= lastBlk) {
-      return [];
-    }
-
-    // Get transaction
+    const latestBlk = metaJson.data.blockNum;
+    let startBlk = fetchedBlk + fetchStep;
     let endBlk = startBlk;
-    while (endBlk < lastBlk) {
+    while (endBlk < latestBlk) {
       endBlk += fetchStep;
-      if (endBlk > lastBlk) {
-        endBlk = lastBlk;
+      if (endBlk > latestBlk) {
+        endBlk = latestBlk;
       }
       postData.block_range = `${startBlk}-${endBlk}`;
       const sRes = await doFetch(postData);
@@ -80,17 +74,17 @@ async function fetchOrder(latestBlk: number) {
       }
       startBlk = endBlk;
     }
-
-    return [];
   } catch (e: any) {
     logger.error(`Get xstorage data failed, error message:${e}`);
   }
+
+  return [];
 }
 
 async function handleXStorage(context: AppContext): Promise<void> {
   const dbOps = createRecordOperator(context.database);
-  const latestBlk = await dbOps.getXStorageLatestBlkNum();
-  for (const event of await fetchOrder(latestBlk)) {
+  const fetchedBlk = await dbOps.getXStorageLatestBlkNum();
+  for (const event of await fetchOrder(fetchedBlk)) {
     const params = JSON.parse(event.params);
     dbOps.addRecord(
       event.account_id,
@@ -108,7 +102,7 @@ async function handleXStorage(context: AppContext): Promise<void> {
 }
 
 export async function createMonitorXStorageTask(context: AppContext) {
-  const xstorageInterval = 3 * 1000;
+  const xstorageInterval = 10 * 1000;
   return makeIntervalTask(
     xstorageInterval,
     xstorageInterval,
