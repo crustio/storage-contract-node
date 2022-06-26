@@ -15,7 +15,7 @@ import {
 
 export async function createMonitorETHTask(context: AppContext): Promise<Task> {
   return {
-    name: "Monitor-task",
+    name: "Monitor-eth",
     start: async (context: AppContext) => {
       // If you don't specify a //url//, Ethers connects to the default 
       // (i.e. ``http:/\/localhost:8545``)

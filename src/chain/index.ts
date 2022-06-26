@@ -1,9 +1,10 @@
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { typesBundleForPolkadot, types } from '@crustio/type-definitions';
-import { checkCid, checkSeeds, sendTx, sleep } from '../utils';
+import { checkCid, checkSeeds, sendTx, formatError, sleep } from '../utils';
 import { CRUST_CHAIN_URL, CRUST_SEEDS } from '../consts'
 import { logger } from '../utils/logger';
 import { Header } from '@polkadot/types/interfaces';
+import Bluebird from 'bluebird';
 
 export const CHAIN_STATUS_CODE = {
   SUCCESS: 200,
@@ -12,25 +13,25 @@ export const CHAIN_STATUS_CODE = {
   PLACE_ORDER_FAILED: 402,
 };
 
-export default class ChainApi {
-  private chainApi: any;
+export default class MainnetApi {
+  private api: any;
   private latestBlock = 0;
 
-  async connect2Chain() {
+  async initApi() {
     // Try to connect to Crust Chain
-    this.chainApi = new ApiPromise({
+    this.api = new ApiPromise({
       provider: new WsProvider(CRUST_CHAIN_URL),
       typesBundle: typesBundleForPolkadot
     });
-    await this.chainApi.isReadyOrError;
+    await this.api.isReadyOrError;
   }
 
   stop() {
-    this.chainApi.disconnect();
+    this.api.disconnect();
   }
 
   async latestFinalizedBlock(): Promise<number> {
-    await this.chainApi.rpc.chain.subscribeFinalizedHeads(
+    await this.api.rpc.chain.subscribeFinalizedHeads(
       (head: Header) => {
         this.latestBlock = head.number.toNumber();
       },
@@ -38,7 +39,27 @@ export default class ChainApi {
     return this.latestBlock;
   }
 
+  private async ensureConnection(): Promise<void> {
+    if (!(await this.withApiReady())) {
+      logger.info('⛓ Connection broken, waiting for chain running.');
+      await Bluebird.delay(6000); // IMPORTANT: Sequential matters(need give time for create ApiPromise)
+      await this.initApi(); // Try to recreate api to connect running chain
+    }
+  }
+
+  private async withApiReady(): Promise<boolean> {
+    try {
+      await this.api.isReadyOrError;
+      return true;
+    } catch (e) {
+      logger.error(`💥 Error connecting with Chain: %s`, formatError(e));
+      return false;
+    }
+  }
+
   async order(cid: string, size: number) {
+    await this.ensureConnection();
+
     // Check cid and seeds
     if (!checkCid(cid)) {
       throw new Error(JSON.stringify({
@@ -58,7 +79,7 @@ export default class ChainApi {
     let txRes: any;
     let tryout = 0;
     while (tryout++ < 10) {
-      const tx = this.chainApi.tx.market.placeStorageOrder(cid, size, 0, '');
+      const tx = this.api.tx.market.placeStorageOrder(cid, size, 0, '');
 
       // Send tx and disconnect chain
       try {

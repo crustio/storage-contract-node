@@ -1,9 +1,9 @@
 import { Database } from 'sqlite';
-import ChainApi from '../chain';
+import MainnetApi from '../chain';
 import IpfsApi from '../ipfs';
 
 export interface AppContext {
   database: Database;
-  chainApi: ChainApi;
+  mainnetApi: MainnetApi;
   ipfsApi: IpfsApi;
 }

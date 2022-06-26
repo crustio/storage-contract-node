@@ -4,7 +4,7 @@ import { AppContext } from "./types/context";
 import _ from 'lodash';
 import { loadDb } from "./db";
 import { Task } from './types/tasks';
-import ChainApi from "./chain";
+import MainnetApi from "./chain";
 import IpfsApi from "./ipfs";
 import { Dayjs } from './utils/datetime';
 import { logger } from './utils/logger';
@@ -17,12 +17,12 @@ const MaxNoNewBlockDuration = Dayjs.duration({
 
 async function main() {
   const db = await loadDb();
-  const chainApi: ChainApi = await startCrustChain()
+  const mainnetApi: MainnetApi = await startCrustChain()
   const ipfsApi: IpfsApi = await startIPFS();
 
   const context :AppContext = {
     database: db,
-    chainApi: chainApi,
+    mainnetApi: mainnetApi,
     ipfsApi: ipfsApi,
   };
 
@@ -36,7 +36,7 @@ async function main() {
     throw e;
   } finally {
     await timeout(db.close(), 5 * 1000, null);
-    chainApi.stop();
+    mainnetApi.stop();
     logger.info('stopping tasks');
     await timeout(
       Bluebird.map(tasks, (t: any) => t.stop()),
@@ -47,9 +47,9 @@ async function main() {
 }
 
 async function startCrustChain() {
-  const chainApi: ChainApi = new ChainApi();
-  await chainApi.connect2Chain();
-  return chainApi;
+  const mainnetApi: MainnetApi = new MainnetApi();
+  await mainnetApi.initApi();
+  return mainnetApi;
 }
 
 async function startIPFS() {
@@ -59,12 +59,12 @@ async function startIPFS() {
 }
 
 async function doEventLoop(context: AppContext, tasks: Task[]): Promise<void> {
-  const { chainApi } = context;
-  let lastBlock = await chainApi.latestFinalizedBlock();
+  const { mainnetApi } = context;
+  let lastBlock = await mainnetApi.latestFinalizedBlock();
   let lastBlockTime = Dayjs();
   logger.info('running event loop');
   do {
-    const curBlock = await chainApi.latestFinalizedBlock();
+    const curBlock = await mainnetApi.latestFinalizedBlock();
     if (lastBlock >= curBlock) {
       const now = Dayjs();
       const diff = Dayjs.duration(now.diff(lastBlockTime));
