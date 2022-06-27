@@ -20,12 +20,6 @@ export class ShadowApi {
       typesBundle: typesBundleForPolkadot,
     });
     await this.api.isReadyOrError;
-
-    this.subscribeFinalized = await this.api.rpc.chain.subscribeFinalizedHeads(
-      (head: Header) => {
-        this.handleHeader(ctx, head);
-      },
-    );
   }
 
   async getXStorageHandler(ctx: AppContext): Promise<VoidFn> {
@@ -34,6 +28,12 @@ export class ShadowApi {
     }
 
     await this.ensureConnection(ctx);
+
+    this.subscribeFinalized = await this.api.rpc.chain.subscribeFinalizedHeads(
+      (head: Header) => {
+        this.handleHeader(ctx, head);
+      },
+    );
 
     return this.subscribeFinalized;
   }
