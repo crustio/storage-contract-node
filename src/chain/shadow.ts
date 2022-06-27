@@ -9,10 +9,12 @@ import { EventRecord, Extrinsic, Header } from '@polkadot/types/interfaces';
 import { VoidFn } from '@polkadot/api/types';
 import Bluebird from 'bluebird';
 
+const STARTBN = 821850;
+
 export class ShadowApi {
   private api: any = null;
   private subscribeFinalized: VoidFn = () => {};
-  private currentBlock = 821850;
+  private latestBlkNum = 0;
 
   async initApi(ctx: AppContext) {
     this.api = new ApiPromise({
@@ -39,12 +41,18 @@ export class ShadowApi {
   }
 
   async handleHeader(ctx: AppContext, b: Header) {
+    if (this.latestBlkNum === 0) {
+      const dbOps = createRecordOperator(ctx.database);
+      const tmpBn = await dbOps.getXStorageLatestBlkNum();
+      this.latestBlkNum = Math.max(tmpBn, STARTBN);
+    }
+
     const chainBn = b.number.toNumber();
     //logger.info(`Subscribe initialized number ${chainBn}`)
-    if (this.currentBlock < chainBn) {
-      let tmpBN = this.currentBlock;
-      this.currentBlock = chainBn
-      for (let bn = tmpBN; bn < this.currentBlock; bn++) {
+    if (this.latestBlkNum < chainBn) {
+      const startBn = this.latestBlkNum;
+      this.latestBlkNum = chainBn;
+      for (let bn = startBn; bn < this.latestBlkNum; bn++) {
         await this.handleXSBlock(ctx, bn)
       }
     }
