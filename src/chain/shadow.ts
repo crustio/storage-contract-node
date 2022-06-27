@@ -5,7 +5,7 @@ import { SHADOW_ENDPOINT_URL } from '../consts';
 import { AppContext } from '../types/context';
 import { createRecordOperator } from '../db/operator';
 import { typesBundleForPolkadot } from '@crustio/type-definitions';
-import { Header} from '@polkadot/types/interfaces';
+import { EventRecord, Extrinsic, Header } from '@polkadot/types/interfaces';
 import { VoidFn } from '@polkadot/api/types';
 import Bluebird from 'bluebird';
 
@@ -52,35 +52,38 @@ export class ShadowApi {
 
   async handleXSBlock(ctx: AppContext, bn: number) {
     const dbOps = createRecordOperator(ctx.database);
-    const bhash = await this.api.rpc.chain.getBlockHash(bn);
-    const [events] = await this.blockWithEvent(bhash);
-    // @ts-ignore
-    const resEvents: EventRecord[] = events;
-    for (const event of resEvents) {
-      if (event.event.isXstorage && event.event.asXstorage.isFileSuccess) {
-        const eJson = JSON.parse(JSON.stringify(event.event.asXstorage.asFileSuccess));
-        const account = eJson.account;
-        const cid = Buffer.from(eJson.cid.substr(2), 'hex').toString();
-        const size = eJson.size;
-        dbOps.addRecord(
-          account,
-          account,
-          cid,
-          size,
-          'CRU',
-          '0',
-          bn,
-          "xstorage",
-          bhash.toString(),
-          getTimestamp(),
-        );
+    const [blocks, events] = await this.blockWithEvent(bn);
+    const txs: Extrinsic[] = blocks?.block?.extrinsics;
+    for (const [index, tx] of new Map(txs.map((item, i) => [i, item]))) {
+      for (const { event, phase } of events) {
+        if (phase.isApplyExtrinsic && phase.asApplyExtrinsic.eq(index) 
+            && event.isXstorage && event.asXstorage.isFileSuccess) {
+          const eJson = JSON.parse(JSON.stringify(event.asXstorage.asFileSuccess));
+          const account = eJson.account;
+          const cid = Buffer.from(eJson.cid.substr(2), 'hex').toString();
+          const size = eJson.size;
+          dbOps.addRecord(
+            account,
+            account,
+            cid,
+            size,
+            'CRU',
+            '0',
+            bn,
+            "xstorage",
+            tx.hash.toHex(),
+            getTimestamp(),
+          );
+        }
       }
     }
   }
 
-  private async blockWithEvent(bhash: any) {
+  private async blockWithEvent(bn: number) {
+    const bhash = await this.api.rpc.chain.getBlockHash(bn);
     return Promise
       .all([
+        this.api.rpc.chain.getBlock(bhash),
         this.api.query.system.events.at(bhash),
     ])
   }
