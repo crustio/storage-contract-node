@@ -1,0 +1,43 @@
+version: '3.0'
+services:
+  crust:
+    image: 'crustio/crust:mainnet'
+    network_mode: host
+    volumes:
+      - '/opt/crust/data/watchchain:/opt/crust/data/watchchain'
+    command:
+      - ./crust
+      - '--base-path'
+      - /opt/crust/data/watchchain
+      - '--chain'
+      - mainnet
+      - '--port'
+      - '30888'
+      - '--name'
+      - crust-node
+      - '--rpc-port'
+      - '19933'
+      - '--ws-port'
+      - '19944'
+      - '--execution'
+      - 'WASM'
+      - '--wasm-execution'
+      - compiled
+      - '--in-peers'
+      - '75'
+      - '--out-peers'
+      - '75'
+      - '--no-telemetry'
+      - '--pruning'
+      - '8000'
+      - '--ws-max-connections'
+      - '500'
+      - '--ws-external'
+      - '--rpc-external'
+      - '--rpc-cors'
+      - 'all'
+    logging:
+      driver: json-file
+      options:
+        max-size: 500m
+    container_name: crust-watch
