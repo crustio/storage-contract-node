@@ -53,8 +53,6 @@ export async function createMonitorPOLYGONTask(context: AppContext): Promise<Tas
         event
       ) => {
         if (POLYGON_ACCOUNT === merchant) {
-          console.log(`polygon order -> cid:${cid},size:${size},price:${price}`)
-          /*
           dbOps.addRecord(
             customer,
             merchant,
@@ -67,7 +65,6 @@ export async function createMonitorPOLYGONTask(context: AppContext): Promise<Tas
             event.transactionHash,
             getTimestamp(),
           );
-          */
         }
       });
 
