@@ -58,10 +58,10 @@ export async function createMonitorPOLYGONTask(context: AppContext): Promise<Tas
             merchant,
             cid,
             size,
-            "POLYGON",
+            "MATIC",
             price.toString(),
             event.blockNumber,
-            "matic",
+            "polygon",
             event.transactionHash,
             getTimestamp(),
           );
