@@ -4,10 +4,12 @@ import { createAPI } from "./api-task";
 import { createOrderTask } from "./order-task";
 import { createPinTask } from "./pin-task";
 import { createMonitorETHTask } from "./monitor-eth";
+import { createMonitorPOLYGONTask } from "./monitor-polygon";
 import { createMonitorElrondTask } from "./monitor-elrond";
 import { createMonitorXStorageTask } from "./monitor-xstorage";
 import {
   ETH_TASK_ENABLE,
+  POLYGON_TASK_ENABLE,
   ELROND_TASK_ENABLE,
   XSTORAGE_TASK_ENABLE,
 } from "../consts";
@@ -18,6 +20,7 @@ export function loadTasks(context: AppContext) {
     createOrderTask,
     //createPinTask,
     ETH_TASK_ENABLE ? createMonitorETHTask : null,
+    POLYGON_TASK_ENABLE ? createMonitorPOLYGONTask : null,
     ELROND_TASK_ENABLE ? createMonitorElrondTask : null,
     XSTORAGE_TASK_ENABLE ? createMonitorXStorageTask : null,
   ];

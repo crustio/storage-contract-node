@@ -24,6 +24,9 @@ CRUST_CHAIN_URL="ws://localhost:19944"
 ETH_ENDPOINT_URL="<ether_mainnet_json_rpc>"
 ETH_STORAGE_CONTRACT_ADDRESS="0x6e9469673257e21b3e75bb9292c9ab009bc481d4"
 ETH_ACCOUNT=""
+POLYGON_ENDPOINT_URL="https://polygon-rpc.com/"
+POLYGON_STORAGE_CONTRACT_ADDRESS="0xE1E8ff8e51DA7066CB1009a4c1dE68AE2d095655"
+POLYGON_ACCOUNT=""
 ELROND_API_URL="https://api.elrond.com"
 ELROND_STORAGE_CONTRACT_ADDRESS="erd1qqqqqqqqqqqqqpgq9z44nz6t6nheyflvfh94syzky84gk0d8j3vss49tnh"
 ELROND_ACCOUNT=""
@@ -38,6 +41,9 @@ API_PORT=8765
 1. ETH_ENDPOINT_URL: Ether mainnet JSON RCP url, follow [this link](https://infura.io/) to obtain a free one
 1. ETH_STORAGE_CONTRACT_ADDRESS: ETH storage contract address on ETH_ENDPOINT_URL which is ***0x6e9469673257e21b3e75bb9292c9ab009bc481d4***
 1. ETH_ACCOUNT: current node's ETH account to receive users' payment
+1. POLYGON_ENDPOINT_URL: Polygon mainnet JSON RCP url, default is ***https://polygon-rpc.com/***
+1. POLYGON_STORAGE_CONTRACT_ADDRESS: Polygon storage contract address on POLYGON_ENDPOINT_URL which is ***0xE1E8ff8e51DA7066CB1009a4c1dE68AE2d095655***
+1. POLYGON_ACCOUNT: current node's Polygon account to receive users' payment
 1. ELROND_API_URL: Elrond api url which is ***https://api.elrond.com***
 1. ELROND_STORAGE_CONTRACT_ADDRESS: Elrond storage contract address which is ***erd1qqqqqqqqqqqqqpgq9z44nz6t6nheyflvfh94syzky84gk0d8j3vss49tnh***
 1. ELROND_ACCOUNT: current node's Elrond account to receive users' payment
@@ -45,11 +51,13 @@ API_PORT=8765
 1. API_PORT: API service port, default is ***8765***
 1. SHADOW_ENDPOINT_URL: Crust shadow endpoint url, default is ***wss://rpc2-shadow.crust.network***
 1. ETH_TASK_ENABLE: optional, boolean, set to false to disable ETH monitor task, default is true
+1. POLYGON_TASK_ENABLE: optional, boolean, set to false to disable POLYGON monitor task, default is true
 1. ELROND_TASK_ENABLE: optional, boolean, set to false to disable ELROND monitor task, default is true
 1. XSTORAGE_TASK_ENABLE: optional, boolean, set to false to disable XSTORAGE monitor task, default is true
 
 ### Start service
 ```
+yarn
 yarn build && yarn start
 ```
 
