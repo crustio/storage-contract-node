@@ -7,11 +7,13 @@ import { createMonitorETHTask } from "./monitor-eth";
 import { createMonitorPOLYGONTask } from "./monitor-polygon";
 import { createMonitorElrondTask } from "./monitor-elrond";
 import { createMonitorXStorageTask } from "./monitor-xstorage";
+import { createMonitorAptosTask } from "./monitor-aptos";
 import {
   ETH_TASK_ENABLE,
   POLYGON_TASK_ENABLE,
   ELROND_TASK_ENABLE,
   XSTORAGE_TASK_ENABLE,
+  APTOS_TASK_ENABLE,
 } from "../consts";
 
 export function loadTasks(context: AppContext) {
@@ -23,6 +25,7 @@ export function loadTasks(context: AppContext) {
     POLYGON_TASK_ENABLE ? createMonitorPOLYGONTask : null,
     ELROND_TASK_ENABLE ? createMonitorElrondTask : null,
     XSTORAGE_TASK_ENABLE ? createMonitorXStorageTask : null,
+    APTOS_TASK_ENABLE ? createMonitorAptosTask : null,
   ];
   tasks = tasks.filter(n => n !== null );
   return Bluebird.mapSeries(tasks, (t: any) => {

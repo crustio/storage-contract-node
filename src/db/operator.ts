@@ -114,6 +114,17 @@ export function createRecordOperator(db: Database): DbOperator {
     return 0;
   };
 
+  const getAptosLatestVersion = async (): Promise<number> => {
+    const records = await db.all(
+      'select id, blockNumber from record where chainType = ? order by blockNumber desc',
+      ["aptos"],
+    );
+    if (records.length > 0) {
+      return records[0].blockNumber;
+    }
+    return 0;
+  };
+
   const updateStatus = async (
     id: number,
     status: FileStatus,
@@ -138,6 +149,7 @@ export function createRecordOperator(db: Database): DbOperator {
     getOrderedRecord,
     getElrondLatestTimestamp,
     getXStorageLatestBlkNum,
+    getAptosLatestVersion,
     updateStatus,
     increaseTryout,
   };
