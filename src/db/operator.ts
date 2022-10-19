@@ -142,6 +142,13 @@ export function createRecordOperator(db: Database): DbOperator {
     )
   }
 
+  const deleteByHash = async (hash: string): Promise<void> => {
+    await db.run(
+      `delete from record where txHash = ?`,
+      [hash],
+    )
+  }
+
   return {
     addRecord,
     getRecordByType,
@@ -152,5 +159,6 @@ export function createRecordOperator(db: Database): DbOperator {
     getAptosStartSequenceNumber,
     updateStatus,
     increaseTryout,
+    deleteByHash,
   };
 }
