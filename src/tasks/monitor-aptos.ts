@@ -24,7 +24,7 @@ async function handleAptos(context: AppContext): Promise<void> {
   }
 
   const dbOps = createRecordOperator(context.database);
-  const latestVersion = await dbOps.getAptosLatestVersion();
+  const latestVersion = await dbOps.getAptosStartSequenceNumber();
   const client = new AptosClient(APTOS_NODE_URL);
   const account = new AptosAccount(undefined, APTOS_STORAGE_MODULE_ADDRESS);
   const txs = await client.getAccountTransactions(account.address(), { start: latestVersion });
@@ -39,7 +39,7 @@ async function handleAptos(context: AppContext): Promise<void> {
           parseInt(event.data.size.toString()),
           'AptosCoin',
           event.data.price.toString(),
-          tx.version,
+          tx.sequence_number,
           "aptos",
           tx.hash,
           getTimestamp(),
