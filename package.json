@@ -16,6 +16,7 @@
     "@types/lodash": "^4.14.181",
     "@types/node": "^16.11.2",
     "@types/url-join": "^4.0.1",
+    "@arbitrum/sdk": "^3.0.0",
     "gts": "^3.1.0",
     "nodemon": "^2.0.6",
     "ts-node": "^10.3.0",
