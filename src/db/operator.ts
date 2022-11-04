@@ -167,10 +167,7 @@ export function createRecordOperator(db: Database): DbOperator {
     getOrderedRecord,
     getElrondLatestTimestamp,
     getXStorageLatestBlkNum,
-<<<<<<< HEAD
-=======
     getARB1LatestBlkNum,
->>>>>>> yaoz/adapt_arbone
     getAptosStartSequenceNumber,
     updateStatus,
     increaseTryout,
