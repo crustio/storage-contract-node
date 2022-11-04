@@ -42,6 +42,13 @@ export async function createAPI(context: AppContext): Promise<Task> {
           }
         } else if (req.method === 'POST') {
           // Do POST request
+          if ('/delete' === route) {
+            const txHash = url.searchParams.get('hash') || '';
+            await dbOps.deleteByHash(txHash);
+          } else {
+            resMsg = `Unknown request:${url.pathname}`;
+            resCode = 404;
+          }
         } else {
           // Other type request
         }

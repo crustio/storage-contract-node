@@ -54,6 +54,8 @@ export interface DbOperator {
   getOrderedRecord: () => Promise<Record[]>;
   getElrondLatestTimestamp: () => Promise<number>;
   getXStorageLatestBlkNum: () => Promise<number>;
+  getAptosStartSequenceNumber: () => Promise<number>;
   updateStatus: (id: number, status: FileStatus) => Promise<void>;
   increaseTryout: (id: number, step = 1) => Promise<void>;
+  deleteByHash: (hash: string) => Promise<void>;
 }

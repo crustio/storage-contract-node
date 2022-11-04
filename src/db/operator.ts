@@ -114,6 +114,17 @@ export function createRecordOperator(db: Database): DbOperator {
     return 0;
   };
 
+  const getAptosStartSequenceNumber = async (): Promise<number> => {
+    const records = await db.all(
+      'select id, blockNumber from record where chainType = ? order by blockNumber desc',
+      ["aptos"],
+    );
+    if (records.length > 0) {
+      return records[0].blockNumber + 1;
+    }
+    return 0;
+  };
+
   const updateStatus = async (
     id: number,
     status: FileStatus,
@@ -131,6 +142,13 @@ export function createRecordOperator(db: Database): DbOperator {
     )
   }
 
+  const deleteByHash = async (hash: string): Promise<void> => {
+    await db.run(
+      `delete from record where txHash = ?`,
+      [hash],
+    )
+  }
+
   return {
     addRecord,
     getRecordByType,
@@ -138,7 +156,9 @@ export function createRecordOperator(db: Database): DbOperator {
     getOrderedRecord,
     getElrondLatestTimestamp,
     getXStorageLatestBlkNum,
+    getAptosStartSequenceNumber,
     updateStatus,
     increaseTryout,
+    deleteByHash,
   };
 }
