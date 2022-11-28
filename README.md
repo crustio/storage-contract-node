@@ -27,6 +27,9 @@ ETH_ACCOUNT=""
 POLYGON_ENDPOINT_URL="https://polygon-rpc.com/"
 POLYGON_STORAGE_CONTRACT_ADDRESS="0xE1E8ff8e51DA7066CB1009a4c1dE68AE2d095655"
 POLYGON_ACCOUNT=""
+ARB1_ENDPOINT_URL="https://arb1.arbitrum.io/rpc"
+ARB1_STORAGE_CONTRACT_ADDRESS="0x6E9469673257E21B3E75bb9292c9aB009bc481D4"
+ARB1_ACCOUNT=""
 ELROND_API_URL="https://api.elrond.com"
 ELROND_STORAGE_CONTRACT_ADDRESS="erd1qqqqqqqqqqqqqpgq9z44nz6t6nheyflvfh94syzky84gk0d8j3vss49tnh"
 ELROND_ACCOUNT=""
@@ -41,9 +44,12 @@ API_PORT=8765
 1. ETH_ENDPOINT_URL: Ether mainnet JSON RCP url, follow [this link](https://infura.io/) to obtain a free one
 1. ETH_STORAGE_CONTRACT_ADDRESS: ETH storage contract address on ETH_ENDPOINT_URL which is ***0x6e9469673257e21b3e75bb9292c9ab009bc481d4***
 1. ETH_ACCOUNT: current node's ETH account to receive users' payment
-1. POLYGON_ENDPOINT_URL: Polygon mainnet JSON RCP url, default is ***https://polygon-rpc.com/***
+1. POLYGON_ENDPOINT_URL: Polygon mainnet JSON RPC url, default is ***https://polygon-rpc.com/***
 1. POLYGON_STORAGE_CONTRACT_ADDRESS: Polygon storage contract address on POLYGON_ENDPOINT_URL which is ***0xE1E8ff8e51DA7066CB1009a4c1dE68AE2d095655***
 1. POLYGON_ACCOUNT: current node's Polygon account to receive users' payment
+1. ARB1_ENDPOINT_URL: Arbitrum one JSON RPC url, default is ***https://arb1.arbitrum.io/rpc***
+1. ARB1_STORAGE_CONTRACT_ADDRESS: Arbitrum one storage contract address on POLYGON_ENDPOINT_URL which is ***0x6E9469673257E21B3E75bb9292c9aB009bc481D4***
+1. ARB1_ACCOUNT: current node's Arbitrum one account to receive users' payment
 1. ELROND_API_URL: Elrond api url which is ***https://api.elrond.com***
 1. ELROND_STORAGE_CONTRACT_ADDRESS: Elrond storage contract address which is ***erd1qqqqqqqqqqqqqpgq9z44nz6t6nheyflvfh94syzky84gk0d8j3vss49tnh***
 1. ELROND_ACCOUNT: current node's Elrond account to receive users' payment
