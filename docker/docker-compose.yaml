@@ -2,8 +2,9 @@ version: '3.0'
 services:
   storage-contract-node:
     image: 'crustio/storage-contract-node:0.0.1'
-    ports:
-      - "33333:33333"
+    network_mode: 'host'
+    volumes:
+      - /opt/crust/pinning-node:/opt/crust/pinning-node
     logging:
       driver: json-file
       options:
