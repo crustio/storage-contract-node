@@ -6,7 +6,9 @@ import { API_PORT } from '../consts';
 
 const http = require('http');
 
-export async function createAPI(context: AppContext): Promise<Task> {
+export async function createAPI(
+  context: AppContext
+): Promise<Task> {
   return {
     name: "api",
     start: async (context: AppContext) => {
@@ -45,6 +47,8 @@ export async function createAPI(context: AppContext): Promise<Task> {
           if ('/delete' === route) {
             const txHash = url.searchParams.get('hash') || '';
             await dbOps.deleteByHash(txHash);
+          } else if ('/syncToLatestBlock' === route) {
+            resBody = await dbOps.syncToLatestBlock();
           } else {
             resMsg = `Unknown request:${url.pathname}`;
             resCode = 404;

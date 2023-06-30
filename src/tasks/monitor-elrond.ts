@@ -1,5 +1,6 @@
 import urlJoin from 'url-join';
 import { AppContext } from '../types/context';
+import { Task } from '../types/tasks';
 import { formatError, httpGet } from '../utils';
 import { getTimestamp } from '../utils';
 import { logger } from '../utils/logger';
@@ -12,7 +13,9 @@ import {
   ELROND_STORAGE_CONTRACT_ADDRESS,
 } from '../consts';
 
-async function handleElrond(context: AppContext): Promise<void> {
+async function handleElrond(
+  context: AppContext
+): Promise<void> {
   const dbOps = createRecordOperator(context.database);
   const timestamp = await dbOps.getElrondLatestTimestamp();
   const url = urlJoin(
@@ -41,7 +44,7 @@ async function handleElrond(context: AppContext): Promise<void> {
               if (eventObj.merchant === ELROND_ACCOUNT) {
                 //logger.info(`Add new Elrond task:`);
                 //Object.entries(eventObj).forEach(([key, val]) => logger.info(`    ${key}:${val}`));
-                dbOps.addRecord(
+                await dbOps.addRecord(
                   eventObj.customer,
                   eventObj.merchant,
                   eventObj.cid,
@@ -50,6 +53,8 @@ async function handleElrond(context: AppContext): Promise<void> {
                   eventObj.price.toString(),
                   tx.timestamp,
                   "elrond",
+                  //eventObj.isPermanent,
+                  false,
                   tx.txHash,
                   getTimestamp(),
                 );
@@ -65,7 +70,9 @@ async function handleElrond(context: AppContext): Promise<void> {
   }
 }
 
-export async function createMonitorElrondTask(context: AppContext) {
+export async function createMonitorElrondTask(
+  context: AppContext
+): Promise<Task> {
   const elrondInterval = 10 * 1000;
   return makeIntervalTask(
     elrondInterval,

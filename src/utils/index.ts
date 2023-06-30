@@ -13,6 +13,19 @@ export function httpGet(url: string) {
 }
 
 /**
+ * isJSON
+ * @param {string} data 
+ * @returns is json or not
+ */
+export function isJSON(data: string) {
+  try {
+    JSON.parse(data);
+    return true;
+  } catch (e: any) {}
+  return false;
+}
+
+/**
  * sleep
  * @param {number} microsec 
  * @returns promise
@@ -37,6 +50,30 @@ export function checkCid(cid: string) {
  */
 export function checkSeeds(seeds: string) {
   return seeds.split(' ').length === 12;
+}
+
+/**
+ * Send tx to Crust Network
+ * @param {import('@polkadot/api/types').SubmittableExtrinsic} tx
+ * @param {string} seeds 12 secret words 
+ * @param {number} retry time 
+ * @returns Promise<boolean> send tx success or failed
+ */
+export async function sendTxRetry(tx: SubmittableExtrinsic, seeds: string, retry: number) {
+  let txRes: any;
+  while (retry-- > 0) {
+    // Send tx and disconnect chain
+    try {
+      txRes = await sendTx(tx, seeds);
+    } catch(e: any) {
+      logger.error('Send transaction failed');
+    }
+    if (txRes)
+      break;
+    await sleep(3000);
+  }
+
+  return txRes;
 }
 
 /**

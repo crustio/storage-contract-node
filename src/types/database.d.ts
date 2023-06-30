@@ -9,7 +9,10 @@ export interface Record {
   id: number;
   cid: string;
   size: number;
+  txHash: string;
+  chainType: string;
   blockNumber: number;
+  isPermanent: boolean;
   txHash: string;
   status: FileStatus;
 }
@@ -22,6 +25,7 @@ export interface RecordShow {
   token: string;
   price: string;
   chainType: string;
+  isPermanent: boolean;
   blockNumber: number;
   txHash: string;
   timestamp: number;
@@ -43,6 +47,7 @@ export interface DbOperator {
     price: string,
     blockNumber: number,
     chainType: string,
+    isPermanent: boolean,
     txHash: string,
     timestamp: number,
   ) => Promise<void>;
@@ -50,12 +55,15 @@ export interface DbOperator {
     status: string,
     chainType: string,
   ) => Promise<RecordShow[]>;
+  setMonitorBlkNum: (blockNumber: number, chainType: string) => Promise<void>;
+  getMonitorBlkNum: (chainType: string) => Promise<number>;
   getNewRecord: () => Promise<Record[]>;
   getOrderedRecord: () => Promise<Record[]>;
   getElrondLatestTimestamp: () => Promise<number>;
   getXStorageLatestBlkNum: () => Promise<number>;
   getARB1LatestBlkNum: () => Promise<number>;
   getAptosStartSequenceNumber: () => Promise<number>;
+  syncToLatestBlock: () => Promise<any>;
   updateStatus: (id: number, status: FileStatus) => Promise<void>;
   increaseTryout: (id: number, step = 1) => Promise<void>;
   deleteByHash: (hash: string) => Promise<void>;

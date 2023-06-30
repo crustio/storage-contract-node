@@ -7,4 +7,5 @@ export interface StorageEvent {
   token: string;
   price: BigNumber;
   size: BigNumber;
+  isPermanent: boolean;
 }
