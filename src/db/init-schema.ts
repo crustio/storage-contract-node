@@ -90,9 +90,12 @@ export async function createRecordTable(sequelize: QueryInterface) {
         transaction,
       },
     );
-    await sequelize.addColumn( 'record',
+  });
+  await withTransaction(sequelize, async (transaction) => {
+    await sequelize.changeColumn( 'record',
       'isPermanent', { 
         type: DataTypes.BOOLEAN,
+        defaultValue: false,
         allowNull: false,
       },
     );
