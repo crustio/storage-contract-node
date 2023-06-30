@@ -20,18 +20,6 @@ export async function createMonitorPOLYGONTask(
   return {
     name: "Monitor-polygon",
     start: async (context: AppContext) => {
-      // If you don't specify a //url//, Ethers connects to the default 
-      // (i.e. ``http:/\/localhost:8545``)
-      if (POLYGON_ENDPOINT_URL === '') {
-        logger.error("Monitor chain address cannot be null!");
-        process.exit(1);
-      }
-
-      if (POLYGON_ACCOUNT === '') {
-        logger.error("Current node address cannot be null!");
-        process.exit(1);
-      }
-
       logger.info('Start "monitor-polygon" service:');
       logger.info(`  Monitor chain rpc:${POLYGON_ENDPOINT_URL}`);
       logger.info(`  Smart contract address:${POLYGON_STORAGE_CONTRACT_ADDRESS}`);

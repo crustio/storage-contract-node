@@ -18,14 +18,6 @@ const orderEventTag = `${APTOS_STORAGE_MODULE_ADDRESS}::${APTOS_ORDER_EVENTS_TAG
 async function handleAptos(
   context: AppContext
 ): Promise<void> {
-  if (APTOS_NODE_URL === '') {
-    return;
-  }
-
-  if (APTOS_STORAGE_MODULE_ADDRESS === '') {
-    return;
-  }
-
   const dbOps = createRecordOperator(context.database);
   const latestVersion = await dbOps.getAptosStartSequenceNumber();
   const client = new AptosClient(APTOS_NODE_URL);
