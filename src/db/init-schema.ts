@@ -67,7 +67,7 @@ export async function createRecordTable(sequelize: QueryInterface) {
       {
         transaction,
       },
-    )
+    );
     await sequelize.createTable( 'monitor',
       {
         id: {
@@ -88,6 +88,12 @@ export async function createRecordTable(sequelize: QueryInterface) {
       },
       {
         transaction,
+      },
+    );
+    await sequelize.addColumn( 'record',
+      'isPermanent', { 
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
       },
     );
   });
