@@ -79,6 +79,10 @@ export async function listenEVMOrderEvents(
   const searchStep = 1000;
   const storageOrderIface = new ethers.utils.Interface(abi);
   const curBlkNum = await getEVMLatestBlkNum(endpoint);
+  if (curBlkNum === -1) {
+    logger.error(`Get ${chainType} latest block number failed.`);
+    return;
+  }
   let fromBlkNum = await dbOps.getMonitorBlkNum(chainType);
   if (fromBlkNum === -1) {
     fromBlkNum = curBlkNum;
@@ -158,6 +162,7 @@ export async function getEVMLatestBlkNum(
       return parseInt(res.data.result, 16);
     } catch (e: any) {
       logger.warn(`Get block number error:${e}`);
+      await sleep(3000);
     }
   }
   return -1;
