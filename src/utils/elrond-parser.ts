@@ -25,6 +25,7 @@ export default function parseStorageEvent(base64String: string): StorageEvent {
     token: "",
     price: new BigNumber(0),
     size: new BigNumber(0),
+    isPermanent: false,
   }
   res.customer = bech32AddressFromBuffer(buf.subarray(paramSpec.caller.start, paramSpec.caller.end));
   res.merchant = bech32AddressFromBuffer(buf.subarray(paramSpec.node.start, paramSpec.node.end));

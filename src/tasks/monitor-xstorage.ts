@@ -7,18 +7,16 @@ import { SHADOW_ENDPOINT_URL } from '../consts';
 
 const shadowApi = new ShadowApi();
 
-async function handleXStorage(ctx: AppContext): Promise<void> {
-  if (SHADOW_ENDPOINT_URL === '') {
-    logger.error("Monitor chain address cannot be null!");
-    return;
-  }
-
-  const subscribeFinalized = await shadowApi.getXStorageHandler(ctx);
-
+async function handleXStorage(
+  context: AppContext
+): Promise<void> {
+  const subscribeFinalized = await shadowApi.getXStorageHandler(context);
   await subscribeFinalized();
 }
 
-export async function createMonitorXStorageTask(context: AppContext): Promise<Task> {
+export async function createMonitorXStorageTask(
+  context: AppContext
+): Promise<Task> {
   const xstorageInterval = 15 * 1000;
   return makeIntervalTask(
     xstorageInterval,

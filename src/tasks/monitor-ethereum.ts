@@ -3,40 +3,40 @@ import { Task } from '../types/tasks';
 import { logger } from '../utils/logger';
 import { makeIntervalTask, listenEVMOrderEvents } from './task-utils';
 import { 
-  ARB1_STORAGE_CONTRACT_ADDRESS,
+  ETH_STORAGE_CONTRACT_ADDRESS,
   STORAGE_ORDER_EVM_ABI,
   STORAGE_ORDER_EVM_TOPICS,
-  ARB1_ACCOUNT,
-  ARB1_ENDPOINT_URL,
+  ETH_ACCOUNT,
+  ETH_ENDPOINT_URL,
   EVMChainType
 } from '../consts';
 
-async function handleMonitorArb1(
+async function handleMonitorETH(
   context: AppContext
 ): Promise<void> {
   await listenEVMOrderEvents(
     context,
-    ARB1_ACCOUNT,
-    ARB1_ENDPOINT_URL,
-    ARB1_STORAGE_CONTRACT_ADDRESS,
+    ETH_ACCOUNT,
+    ETH_ENDPOINT_URL,
+    ETH_STORAGE_CONTRACT_ADDRESS,
     STORAGE_ORDER_EVM_ABI,
     STORAGE_ORDER_EVM_TOPICS,
-    EVMChainType.ARB1,
+    EVMChainType.ETHEREUM,
   );
 }
 
-export async function createMonitorARB1Task(
+export async function createMonitorETHTask(
   context: AppContext
 ): Promise<Task> {
-  logger.info(`---> Arb1 contract address:${ARB1_STORAGE_CONTRACT_ADDRESS}`);
-  logger.info(`---> Arb1 account:${ARB1_ACCOUNT}`);
-  logger.info(`---> Arb1 endpoint:${ARB1_ENDPOINT_URL}`);
+  logger.info(`---> Ethereum contract address:${ETH_STORAGE_CONTRACT_ADDRESS}`);
+  logger.info(`---> Ethereum account:${ETH_ACCOUNT}`);
+  logger.info(`---> Ethereum endpoint:${ETH_ENDPOINT_URL}`);
   const monitorInterval = 15 * 1000;
   return makeIntervalTask(
     monitorInterval,
     monitorInterval,
-    'Monitor-arb1',
+    'Monitor-ethereum',
     context,
-    handleMonitorArb1,
+    handleMonitorETH,
   );
 }

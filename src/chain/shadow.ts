@@ -70,7 +70,8 @@ export class ShadowApi {
           const account = eJson.account;
           const cid = Buffer.from(eJson.cid.substr(2), 'hex').toString();
           const size = eJson.size;
-          dbOps.addRecord(
+          const isPermanent = eJson.isPermanent;
+          await dbOps.addRecord(
             account,
             account,
             cid,
@@ -79,6 +80,7 @@ export class ShadowApi {
             '0',
             bn,
             "xstorage",
+            isPermanent,
             tx.hash.toHex(),
             getTimestamp(),
           );

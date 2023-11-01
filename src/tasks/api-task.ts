@@ -6,7 +6,9 @@ import { API_PORT } from '../consts';
 
 const http = require('http');
 
-export async function createAPI(context: AppContext): Promise<Task> {
+export async function createAPI(
+  context: AppContext
+): Promise<Task> {
   return {
     name: "api",
     start: async (context: AppContext) => {
@@ -45,6 +47,8 @@ export async function createAPI(context: AppContext): Promise<Task> {
           if ('/delete' === route) {
             const txHash = url.searchParams.get('hash') || '';
             await dbOps.deleteByHash(txHash);
+          } else if ('/syncToLatestBlock' === route) {
+            resBody = await dbOps.syncToLatestBlock();
           } else {
             resMsg = `Unknown request:${url.pathname}`;
             resCode = 404;
@@ -61,8 +65,10 @@ export async function createAPI(context: AppContext): Promise<Task> {
         res.writeHead(resCode, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(resBody));
       });
-      server.listen(API_PORT);
-      logger.info(`Start api on port:${API_PORT} successfully`)
+      server.listen(API_PORT, '0.0.0.0', () => {
+        logger.info(server.address())
+      });
+      //logger.info(`Start api on port:${API_PORT} successfully`)
     },
     stop: async () => {
       return true;

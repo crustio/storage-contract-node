@@ -1,7 +1,9 @@
+import Chain from '../chain';
 import { Database } from 'sqlite';
-import { logger } from '../utils/logger';
 import { formatError } from '../utils';
-import { TRYOUT } from '../consts';
+import * as config from '../consts';
+import { logger } from '../utils/logger';
+import { getEVMLatestBlkNum } from '../tasks/task-utils';
 import {
   FileStatus,
   Record,
@@ -20,14 +22,15 @@ export function createRecordOperator(db: Database): DbOperator {
     price: string,
     blockNumber: number,
     chainType: string,
+    isPermanent: boolean,
     txHash: string,
     timestamp: number,
   ): Promise<void> => {
     try {
       await db.run(
         'insert into record ' +
-          '(`customer`, `merchant`, `cid`, `size`, `token`, `price`, `blockNumber`, `chainType`, `txHash`, `timestamp`, `tryout`, `status`)' +
-          ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+          '(`customer`, `merchant`, `cid`, `size`, `token`, `price`, `blockNumber`, `chainType`, `isPermanent`, `txHash`, `timestamp`, `tryout`, `status`)' +
+          ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
         [
           customer,
           merchant,
@@ -37,6 +40,7 @@ export function createRecordOperator(db: Database): DbOperator {
           price,
           blockNumber,
           chainType,
+          isPermanent,
           txHash,
           timestamp,
           0,
@@ -50,6 +54,7 @@ export function createRecordOperator(db: Database): DbOperator {
       logger.info(`  size:${size}`);
       logger.info(`  price:${price}`);
       logger.info(`  token:${token}`);
+      logger.info(`  isPermanent:${isPermanent}`);
     } catch(e) {
       const err_code = JSON.parse(JSON.stringify(e)).code;
       if (err_code !== 'SQLITE_CONSTRAINT') {
@@ -70,7 +75,7 @@ export function createRecordOperator(db: Database): DbOperator {
       where = `where ${params.join(' and ')}`;
     }
     const records = await db.all(
-      `select customer, merchant, cid, size, token, price, blockNumber, chainType, txHash, timestamp, status from record ${where} order by timestamp asc`,
+      `select customer, merchant, cid, size, token, price, blockNumber, chainType, isPermanent, txHash, timestamp, status from record ${where} order by timestamp asc`,
       [],
     );
     return records;
@@ -78,19 +83,40 @@ export function createRecordOperator(db: Database): DbOperator {
 
   const getNewRecord = async (): Promise<Record[]> => {
     const records = await db.all(
-      'select id, cid, size, blockNumber, txHash, status from record where status = ? and tryout < ? order by timestamp asc',
-      ["new", TRYOUT],
+      'select id, cid, size, chainType, txHash, blockNumber, isPermanent, txHash, status from record where status = ? and tryout < ? order by timestamp asc',
+      ["new", config.TRYOUT],
     );
     return records;
   };
 
   const getOrderedRecord = async (): Promise<Record[]> => {
     const records = await db.all(
-      'select id, cid, size, blockNumber, txHash, status from record where status = ? and tryout < ? order by timestamp asc',
-      ["ordered", TRYOUT],
+      'select id, cid, size, blockNumber, isPermanent, txHash, status from record where status = ? and tryout < ? order by timestamp asc',
+      ["ordered", config.TRYOUT],
     );
     return records;
   };
+
+  const setMonitorBlkNum = async (
+    blockNumber: number,
+    chainType: string
+  ): Promise<void> => {
+    await db.run(
+      'insert or replace into monitor ' + '(`blockNumber`, `chainType`)' + ' values (?, ?)',
+      [blockNumber, chainType]
+    );
+  }
+
+  const getMonitorBlkNum = async (chainType: string): Promise<number> => {
+    const records = await db.all(
+      'select blockNumber from monitor where chainType = ?',
+      [chainType],
+    );
+    if (records.length > 0) {
+      return records[0].blockNumber;
+    }
+    return -1;
+  }
 
   const getElrondLatestTimestamp = async (): Promise<number> => {
     const records = await db.all(
@@ -136,6 +162,23 @@ export function createRecordOperator(db: Database): DbOperator {
     return 0;
   };
 
+  const syncToLatestBlock = async (): Promise<any> => {
+    if (config.EVMChain2RPC.size === 0) 
+      return "{}";
+
+    let ans = "{"
+    for (const [key,value] of config.EVMChain2RPC) {
+      const curBlkNum = await getEVMLatestBlkNum(value);
+      await db.run(
+        `update monitor set blockNumber = ? where chainType = ?`,
+        [curBlkNum, key],
+      );
+      ans += `"${key}":"${curBlkNum}",`
+      logger.info(`Update ${key} sync block number to ${curBlkNum}`);
+    }
+    return JSON.parse(ans.substr(0,ans.length-1) + "}");
+  };
+
   const updateStatus = async (
     id: number,
     status: FileStatus,
@@ -149,7 +192,7 @@ export function createRecordOperator(db: Database): DbOperator {
   const increaseTryout = async (id: number, step = 1): Promise<void> => {
     await db.run(
       `update record set tryout = tryout + ?, status = CASE WHEN tryout + ? >= ? THEN 'tryout' ELSE 'new' END where id = ?`,
-      [step, step, TRYOUT, id],
+      [step, step, config.TRYOUT, id],
     )
   }
 
@@ -162,6 +205,7 @@ export function createRecordOperator(db: Database): DbOperator {
 
   return {
     addRecord,
+    setMonitorBlkNum,
     getRecordByType,
     getNewRecord,
     getOrderedRecord,
@@ -169,6 +213,8 @@ export function createRecordOperator(db: Database): DbOperator {
     getXStorageLatestBlkNum,
     getARB1LatestBlkNum,
     getAptosStartSequenceNumber,
+    getMonitorBlkNum,
+    syncToLatestBlock,
     updateStatus,
     increaseTryout,
     deleteByHash,

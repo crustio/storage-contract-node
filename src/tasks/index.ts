@@ -3,32 +3,35 @@ import { AppContext } from "../types/context";
 import { createAPI } from "./api-task";
 import { createOrderTask } from "./order-task";
 import { createPinTask } from "./pin-task";
-import { createMonitorETHTask } from "./monitor-eth";
-import { createMonitorPOLYGONTask } from "./monitor-polygon";
+import { createMonitorETHTask } from "./monitor-ethereum";
 import { createMonitorARB1Task } from "./monitor-arb1";
+import { createMonitorOPTask } from "./monitor-optimism";
+import { createMonitorZksyncTask } from "./monitor-zksync";
+//import { createMonitorStarknetTask } from "./monitor-starknet";
+import { createMonitorPOLYGONTask } from "./monitor-polygon";
+import { createMonitorPolygonZKTask } from "./monitor-polygonzk";
 import { createMonitorElrondTask } from "./monitor-elrond";
 import { createMonitorXStorageTask } from "./monitor-xstorage";
 import { createMonitorAptosTask } from "./monitor-aptos";
-import {
-  ETH_TASK_ENABLE,
-  POLYGON_TASK_ENABLE,
-  ARB1_TASK_ENABLE,
-  ELROND_TASK_ENABLE,
-  XSTORAGE_TASK_ENABLE,
-  APTOS_TASK_ENABLE,
-} from "../consts";
+import * as config from "../consts";
 
-export function loadTasks(context: AppContext) {
+export function loadTasks(
+  context: AppContext
+) {
   let tasks = [
     createAPI,
     createOrderTask,
     //createPinTask,
-    ETH_TASK_ENABLE ? createMonitorETHTask : null,
-    POLYGON_TASK_ENABLE ? createMonitorPOLYGONTask : null,
-    ARB1_TASK_ENABLE ? createMonitorARB1Task : null,
-    ELROND_TASK_ENABLE ? createMonitorElrondTask : null,
-    XSTORAGE_TASK_ENABLE ? createMonitorXStorageTask : null,
-    APTOS_TASK_ENABLE ? createMonitorAptosTask : null,
+    config.ETH_TASK_ENABLE ? createMonitorETHTask : null,
+    config.ARB1_TASK_ENABLE ? createMonitorARB1Task : null,
+    config.OP_TASK_ENABLE ? createMonitorOPTask : null,
+    config.ZKSYNC_TASK_ENABLE ? createMonitorZksyncTask : null,
+    //config.STARKNET_TASK_ENABLE ? createMonitorStarknetTask : null,
+    config.POLYGONZK_TASK_ENABLE ? createMonitorPolygonZKTask : null,
+    config.POLYGON_TASK_ENABLE ? createMonitorPOLYGONTask : null,
+    config.ELROND_TASK_ENABLE ? createMonitorElrondTask : null,
+    config.XSTORAGE_TASK_ENABLE ? createMonitorXStorageTask : null,
+    config.APTOS_TASK_ENABLE ? createMonitorAptosTask : null,
   ];
   tasks = tasks.filter(n => n !== null );
   return Bluebird.mapSeries(tasks, (t: any) => {

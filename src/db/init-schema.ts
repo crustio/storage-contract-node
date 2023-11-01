@@ -42,6 +42,10 @@ export async function createRecordTable(sequelize: QueryInterface) {
           type: DataTypes.STRING,
           allowNull: false,
         },
+        isPermanent: {
+          type: DataTypes.BOOLEAN,
+          allowNull: false,
+        },
         txHash: {
           type: DataTypes.STRING,
           allowNull: false,
@@ -62,6 +66,37 @@ export async function createRecordTable(sequelize: QueryInterface) {
       },
       {
         transaction,
+      },
+    );
+    await sequelize.createTable( 'monitor',
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+        },
+        blockNumber: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          unique: true,
+        },
+        chainType: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          unique: true,
+        },
+      },
+      {
+        transaction,
+      },
+    );
+  });
+  await withTransaction(sequelize, async (transaction) => {
+    await sequelize.changeColumn( 'record',
+      'isPermanent', { 
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
       },
     );
   });
