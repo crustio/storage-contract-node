@@ -48,6 +48,7 @@ export enum EVMChainType {
   OPTIMISM = 'optimism',
   ZKSYNC = 'zksync',
   STARKNET = 'starknet',
+  POLYGONZK = 'polygonzk',
   POLYGON = 'polygon',
 };
 
@@ -57,6 +58,7 @@ export const EVMChain2Token = new Map<string,string>([
   [EVMChainType.OPTIMISM, 'eth'],
   [EVMChainType.ZKSYNC, 'eth'],
   [EVMChainType.STARKNET, 'eth'],
+  [EVMChainType.POLYGONZK, 'eth'],
   [EVMChainType.POLYGON, 'matic'],
 ]);
 
@@ -90,6 +92,11 @@ export const STARKNET_ACCOUNT = getParamOrExitExcept("STARKNET_ACCOUNT", STARKNE
 export const STARKNET_ENDPOINT_URL = getParamOrExitExcept("STARKNET_ENDPOINT_URL", STARKNET_TASK_ENABLE);
 export const STARKNET_STORAGE_CONTRACT_ADDRESS = getParamOrExitExcept("STARKNET_STORAGE_CONTRACT_ADDRESS", STARKNET_TASK_ENABLE);
 
+export const POLYGONZK_TASK_ENABLE = process.env.POLYGONZK_TASK_ENABLE as string !== 'false';
+export const POLYGONZK_ACCOUNT = getParamOrExitExcept("POLYGONZK_ACCOUNT", POLYGONZK_TASK_ENABLE);
+export const POLYGONZK_ENDPOINT_URL = getParamOrExitExcept("POLYGONZK_ENDPOINT_URL", POLYGONZK_TASK_ENABLE);
+export const POLYGONZK_STORAGE_CONTRACT_ADDRESS = getParamOrExitExcept("POLYGONZK_STORAGE_CONTRACT_ADDRESS", POLYGONZK_TASK_ENABLE);
+
 export const POLYGON_TASK_ENABLE = process.env.POLYGON_TASK_ENABLE as string !== 'false';
 export const POLYGON_ACCOUNT = getParamOrExitExcept("POLYGON_ACCOUNT", POLYGON_TASK_ENABLE);
 export const POLYGON_ENDPOINT_URL = getParamOrExitExcept("POLYGON_ENDPOINT_URL", POLYGON_TASK_ENABLE);
@@ -115,6 +122,7 @@ export const EVMChain2RPC = new Map<string,string>([
   [EVMChainType.OPTIMISM, OP_ENDPOINT_URL],
   [EVMChainType.ZKSYNC, ZKSYNC_ENDPOINT_URL],
   //[EVMChainType.STARKNET, STARKNET_ENDPOINT_URL],
+  [EVMChainType.POLYGONZK, POLYGONZK_ENDPOINT_URL],
   [EVMChainType.POLYGON, POLYGON_ENDPOINT_URL],
 ]);
 

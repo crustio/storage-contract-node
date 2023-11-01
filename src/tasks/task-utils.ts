@@ -162,7 +162,7 @@ export async function getEVMLatestBlkNum(
       return parseInt(res.data.result, 16);
     } catch (e: any) {
       logger.warn(`Get block number error:${e}`);
-      await sleep(3000);
+      await sleep(1500);
     }
   }
   return -1;

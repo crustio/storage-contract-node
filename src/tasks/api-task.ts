@@ -65,8 +65,10 @@ export async function createAPI(
         res.writeHead(resCode, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(resBody));
       });
-      server.listen(API_PORT);
-      logger.info(`Start api on port:${API_PORT} successfully`)
+      server.listen(API_PORT, '0.0.0.0', () => {
+        logger.info(server.address())
+      });
+      //logger.info(`Start api on port:${API_PORT} successfully`)
     },
     stop: async () => {
       return true;

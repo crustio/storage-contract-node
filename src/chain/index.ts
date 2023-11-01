@@ -100,6 +100,17 @@ export default class MainnetApi {
       }));
     }
 
+    // Send place order transaction
+    const placeOrderTx = this.api.tx.market.placeStorageOrder(cid, size, 0, `{"txHash":"${txHash}","chainType":"${chainType}"}`);
+    const placeOrderTxRes = await sendTxRetry(placeOrderTx, CRUST_SEEDS, 10);
+    if (!placeOrderTxRes) {
+      throw new Error(JSON.stringify({
+        status_code: CHAIN_STATUS_CODE.PLACE_ORDER_FAILED,
+        message: `Place order cid:${cid} failed`,
+      }));
+    }
+    logger.info(`Place order cid:${cid} successfully!`);
+
     // Send prepaid transaction
     if (isPermanent) {
       const price = this.getPrice(size, 100);
@@ -113,16 +124,5 @@ export default class MainnetApi {
       }
       logger.info(`Add prepaid:${price} to permanent storage for cid:${cid} successfully!`);
     }
-
-    // Send place order transaction
-    const placeOrderTx = this.api.tx.market.placeStorageOrder(cid, size, 0, `{"txHash":"${txHash}","chainType":"${chainType}"}`);
-    const placeOrderTxRes = await sendTxRetry(placeOrderTx, CRUST_SEEDS, 10);
-    if (!placeOrderTxRes) {
-      throw new Error(JSON.stringify({
-        status_code: CHAIN_STATUS_CODE.PLACE_ORDER_FAILED,
-        message: `Place order cid:${cid} failed`,
-      }));
-    }
-    logger.info(`Place order cid:${cid} successfully!`);
   }
 }

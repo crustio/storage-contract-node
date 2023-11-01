@@ -9,6 +9,7 @@ import { createMonitorOPTask } from "./monitor-optimism";
 import { createMonitorZksyncTask } from "./monitor-zksync";
 //import { createMonitorStarknetTask } from "./monitor-starknet";
 import { createMonitorPOLYGONTask } from "./monitor-polygon";
+import { createMonitorPolygonZKTask } from "./monitor-polygonzk";
 import { createMonitorElrondTask } from "./monitor-elrond";
 import { createMonitorXStorageTask } from "./monitor-xstorage";
 import { createMonitorAptosTask } from "./monitor-aptos";
@@ -26,6 +27,7 @@ export function loadTasks(
     config.OP_TASK_ENABLE ? createMonitorOPTask : null,
     config.ZKSYNC_TASK_ENABLE ? createMonitorZksyncTask : null,
     //config.STARKNET_TASK_ENABLE ? createMonitorStarknetTask : null,
+    config.POLYGONZK_TASK_ENABLE ? createMonitorPolygonZKTask : null,
     config.POLYGON_TASK_ENABLE ? createMonitorPOLYGONTask : null,
     config.ELROND_TASK_ENABLE ? createMonitorElrondTask : null,
     config.XSTORAGE_TASK_ENABLE ? createMonitorXStorageTask : null,
