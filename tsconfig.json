@@ -9,5 +9,7 @@
       "skipLibCheck": true,
       "strict": true,
       "declaration": true
-  }
+  },
+  "include": ["./**/*.ts", "./**/*.js"],
+  "exclude": ["node_modules", "build"]
 }
