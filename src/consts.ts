@@ -14,16 +14,16 @@ const getParamOrExit = (name: string) => {
 
 /**
  * @param {string} name
- * @param {boolean} except if true not exit
+ * @param {boolean} enable if false not exit
  * @returns param or null
  */
-const getParamOrExitExcept = (name: string, except: boolean) => {
+const getParamOrExitExcept = (name: string, enable: boolean) => {
   const param = process.env[name];
-  if (!param && !except) {
+  if (!param && enable) {
     console.error(`Required config param '${name}' missing`);
     process.exit(1);
   }
-  return param ? param : "";
+  return param ?? "";
 }
 
 const getParam = (name: string) => {
@@ -106,6 +106,13 @@ export const ELROND_TASK_ENABLE = process.env.ELROND_TASK_ENABLE as string !== '
 export const ELROND_API_URL = getParamOrExitExcept("ELROND_API_URL", ELROND_TASK_ENABLE);
 export const ELROND_ACCOUNT = getParamOrExitExcept("ELROND_ACCOUNT", ELROND_TASK_ENABLE);
 export const ELROND_STORAGE_CONTRACT_ADDRESS = getParamOrExitExcept("ELROND_STORAGE_CONTRACT_ADDRESS", ELROND_TASK_ENABLE);
+
+export const ALGO_TASK_ENABLE = process.env.ALGO_TASK_ENABLE as string !== 'false';
+export const ALGO_ACCOUNT = getParamOrExitExcept("ALGO_ACCOUNT", ALGO_TASK_ENABLE);
+export const ALGO_STORAGE_APP_ID = parseInt(getParamOrExitExcept("ALGO_STORAGE_APP_ID", ALGO_TASK_ENABLE));
+export const ALGO_INDEXER_URL = getParamOrExitExcept("ALGO_INDEXER_URL", ALGO_TASK_ENABLE);
+export const ALGO_INDEXER_PORT = parseInt(getParamOrExitExcept("ALGO_INDEXER_PORT", ALGO_TASK_ENABLE));
+export const ALGO_TOKEN = getParamOrExitExcept("ALGO_TOKEN", ALGO_TASK_ENABLE);
 
 export const APTOS_TASK_ENABLE = process.env.APTOS_TASK_ENABLE as string !== 'false';
 export const APTOS_ACCOUNT = getParamOrExitExcept("APTOS_ACCOUNT", APTOS_TASK_ENABLE);
