@@ -19,47 +19,70 @@ to start a watcher for order and wait for chain synchronization complete. You ca
 ### Bootstrap configure 
 ***.env*** file needs to be created in the project root directory, a sample ***.env*** file shows as follow:
 ```
+# Crust network account seeds
 CRUST_SEEDS=""
 CRUST_CHAIN_URL="ws://localhost:19944"
+
+# 1. Ethereum configure
+# Follow https://infura.io to obtain a free eth endpoint
 ETH_ENDPOINT_URL="<ether_mainnet_json_rpc>"
-ETH_STORAGE_CONTRACT_ADDRESS="0x6e9469673257e21b3e75bb9292c9ab009bc481d4"
+ETH_STORAGE_CONTRACT_ADDRESS="0xE391613d2056e47F74ED5eF1d443d4CDB21AAAd9"
+# Ethereum storage order merchant address, set your address here
 ETH_ACCOUNT=""
+
+# 2. Arbitrum-One configure
+ARB1_ENDPOINT_URL="https://arb1.arbitrum.io/rpc"
+ARB1_STORAGE_CONTRACT_ADDRESS="0x9ae6c9d00fde0e0f774693ca6099d06dfe2001c6"
+# Arbitrum One storage order merchant address, set your address here
+ARB1_ACCOUNT=""
+
+# 3. Optimism configure
+OP_ENDPOINT_URL="https://rpc.ankr.com/optimism"
+OP_STORAGE_CONTRACT_ADDRESS="0xf8e6F7bb144D3475fcf39Bd879510Fa93C775ee2"
+# Optimism storage order merchant address, set your address here
+OP_ACCOUNT=""
+
+# 4. zkSync configure
+ZKSYNC_ENDPOINT_URL="https://mainnet.era.zksync.io"
+ZKSYNC_STORAGE_CONTRACT_ADDRESS="0xfa866AbF8F0b8f154654DEd956B2467dFB6A4135"
+# zkSync storage order merchant address, set your address here
+ZKSYNC_ACCOUNT=""
+
+# 5. Polygon configure
 POLYGON_ENDPOINT_URL="https://polygon-rpc.com/"
 POLYGON_STORAGE_CONTRACT_ADDRESS="0xE1E8ff8e51DA7066CB1009a4c1dE68AE2d095655"
+# Polygon storage order merchant address, set your address here
 POLYGON_ACCOUNT=""
-ARB1_ENDPOINT_URL="https://arb1.arbitrum.io/rpc"
-ARB1_STORAGE_CONTRACT_ADDRESS="0x6E9469673257E21B3E75bb9292c9aB009bc481D4"
-ARB1_ACCOUNT=""
+
+# 6. Elrond configure
 ELROND_API_URL="https://api.elrond.com"
 ELROND_STORAGE_CONTRACT_ADDRESS="erd1qqqqqqqqqqqqqpgq9z44nz6t6nheyflvfh94syzky84gk0d8j3vss49tnh"
+# Elrond storage order merchant address, set your address here
 ELROND_ACCOUNT=""
+
+# 7. Xstorage configure
 SHADOW_ENDPOINT_URL="wss://rpc2-shadow.crust.network"
 SHADOW_SUBSCAN_URL="https://shadow.webapi.subscan.io"
-DB_PATH="/opt/crust/pinning-node"
-API_PORT=8765
-```
 
-1. CRUST_SEEDS: Crust network account seeds
-1. CRUST_CHAIN_URL: Crust network address, you can use the watcher started in previous step which is '***ws://localhost:19944***'
-1. ETH_ENDPOINT_URL: Ether mainnet JSON RCP url, follow [this link](https://infura.io/) to obtain a free one
-1. ETH_STORAGE_CONTRACT_ADDRESS: ETH storage contract address on ETH_ENDPOINT_URL which is ***0x6e9469673257e21b3e75bb9292c9ab009bc481d4***
-1. ETH_ACCOUNT: current node's ETH account to receive users' payment
-1. POLYGON_ENDPOINT_URL: Polygon mainnet JSON RPC url, default is ***https://polygon-rpc.com/***
-1. POLYGON_STORAGE_CONTRACT_ADDRESS: Polygon storage contract address on POLYGON_ENDPOINT_URL which is ***0xE1E8ff8e51DA7066CB1009a4c1dE68AE2d095655***
-1. POLYGON_ACCOUNT: current node's Polygon account to receive users' payment
-1. ARB1_ENDPOINT_URL: Arbitrum one JSON RPC url, default is ***https://arb1.arbitrum.io/rpc***
-1. ARB1_STORAGE_CONTRACT_ADDRESS: Arbitrum one storage contract address on POLYGON_ENDPOINT_URL which is ***0x6E9469673257E21B3E75bb9292c9aB009bc481D4***
-1. ARB1_ACCOUNT: current node's Arbitrum one account to receive users' payment
-1. ELROND_API_URL: Elrond api url which is ***https://api.elrond.com***
-1. ELROND_STORAGE_CONTRACT_ADDRESS: Elrond storage contract address which is ***erd1qqqqqqqqqqqqqpgq9z44nz6t6nheyflvfh94syzky84gk0d8j3vss49tnh***
-1. ELROND_ACCOUNT: current node's Elrond account to receive users' payment
-1. DB_PATH: pinning node datbase path, default is ***/opt/crust/pinning-node***
-1. API_PORT: API service port, default is ***8765***
-1. SHADOW_ENDPOINT_URL: Crust shadow endpoint url, default is ***wss://rpc2-shadow.crust.network***
-1. ETH_TASK_ENABLE: optional, boolean, set to false to disable ETH monitor task, default is true
-1. POLYGON_TASK_ENABLE: optional, boolean, set to false to disable POLYGON monitor task, default is true
-1. ELROND_TASK_ENABLE: optional, boolean, set to false to disable ELROND monitor task, default is true
-1. XSTORAGE_TASK_ENABLE: optional, boolean, set to false to disable XSTORAGE monitor task, default is true
+# 8. Aptos configure
+APTOS_NODE_URL="https://fullnode.mainnet.aptoslabs.com"
+APTOS_STORAGE_MODULE_ADDRESS="0x59c6f5359735a27beba04252ae5fee4fc9c6ec0b7e22dab9f5ed7173283c54d0"
+APTOS_ORDER_EVENTS_TAG="storage::OrderEvent"
+# Aptos storage order merchant address, set your address here
+APTOS_ACCOUNT=""
+
+# 9. Algorand configure
+ALGO_INDEXER_URL="https://mainnet-idx.algonode.cloud"
+ALGO_INDEXER_PORT=443
+ALGO_STORAGE_APP_ID="1275319623"
+ALGO_TOKEN='a'.repeat(64)
+# Algorand storage order merchant address, set your address here
+ALGO_ACCOUNT=""
+
+DB_PATH="/opt/crust/pinning-node"
+API_PORT=33333
+```
+Note: If you just want to serve some of the chains storage service above, set **XXX_TASK_ENABLE=false** to disable the others which XXX is the network you want to disable, such as **ETH_TASK_ENABLE=false**
 
 ### Start service
 ```
@@ -79,7 +102,7 @@ Get new order information
 
 Arguments:
 1. status: optional, should be 'new' or 'ordered'
-1. chainType: optional, should be 'eth' or ' elrond'
+1. chainType: optional, such as 'eth', ' elrond'
 
 curl example:
 ```
