@@ -15,6 +15,8 @@ import { createMonitorXStorageTask } from "./monitor-xstorage";
 import { createMonitorAptosTask } from "./monitor-aptos";
 import { createMonitorAlgorandTask } from "./monitor-algorand";
 import * as config from "../consts";
+import {createMonitorBaseTask} from "./monitor-base";
+import {createMonitorBlastTask} from "./monitor-blast";
 
 export function loadTasks(
   context: AppContext
@@ -34,6 +36,8 @@ export function loadTasks(
     config.XSTORAGE_TASK_ENABLE ? createMonitorXStorageTask : null,
     config.APTOS_TASK_ENABLE ? createMonitorAptosTask : null,
     config.ALGO_TASK_ENABLE ? createMonitorAlgorandTask : null,
+    config.BASE_TASK_ENABLE ? createMonitorBaseTask : null,
+    config.BLAST_TASK_ENABLE ? createMonitorBlastTask : null,
   ];
   tasks = tasks.filter(n => n !== null );
   return Bluebird.mapSeries(tasks, (t: any) => {

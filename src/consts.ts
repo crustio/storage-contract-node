@@ -50,6 +50,8 @@ export enum EVMChainType {
   STARKNET = 'starknet',
   POLYGONZK = 'polygonzk',
   POLYGON = 'polygon',
+  BASE = 'base',
+  BLAST = 'blast',
 };
 
 export const EVMChain2Token = new Map<string,string>([
@@ -60,6 +62,8 @@ export const EVMChain2Token = new Map<string,string>([
   [EVMChainType.STARKNET, 'eth'],
   [EVMChainType.POLYGONZK, 'eth'],
   [EVMChainType.POLYGON, 'matic'],
+  [EVMChainType.BASE, 'eth'],
+  [EVMChainType.BLAST, 'eth'],
 ]);
 
 export const CRUST_SEEDS = getParamOrExit("CRUST_SEEDS");
@@ -81,6 +85,16 @@ export const OP_TASK_ENABLE = process.env.OP_TASK_ENABLE as string !== 'false';
 export const OP_ACCOUNT = getParamOrExitExcept("OP_ACCOUNT", OP_TASK_ENABLE);
 export const OP_ENDPOINT_URL = getParamOrExitExcept("OP_ENDPOINT_URL", OP_TASK_ENABLE);
 export const OP_STORAGE_CONTRACT_ADDRESS = getParamOrExitExcept("OP_STORAGE_CONTRACT_ADDRESS", OP_TASK_ENABLE);
+
+export const BASE_TASK_ENABLE = process.env.BASE_TASK_ENABLE as string !== 'false';
+export const BASE_ACCOUNT = getParamOrExitExcept("BASE_ACCOUNT", BASE_TASK_ENABLE);
+export const BASE_ENDPOINT_URL = getParamOrExitExcept("BASE_ENDPOINT_URL", BASE_TASK_ENABLE);
+export const BASE_STORAGE_CONTRACT_ADDRESS = getParamOrExitExcept("BASE_STORAGE_CONTRACT_ADDRESS", BASE_TASK_ENABLE);
+
+export const BLAST_TASK_ENABLE = process.env.BLAST_TASK_ENABLE as string !== 'false';
+export const BLAST_ACCOUNT = getParamOrExitExcept("BLAST_ACCOUNT", BLAST_TASK_ENABLE);
+export const BLAST_ENDPOINT_URL = getParamOrExitExcept("BLAST_ENDPOINT_URL", BLAST_TASK_ENABLE);
+export const BLAST_STORAGE_CONTRACT_ADDRESS = getParamOrExitExcept("BLAST_STORAGE_CONTRACT_ADDRESS", BLAST_TASK_ENABLE);
 
 export const ZKSYNC_TASK_ENABLE = process.env.ZKSYNC_TASK_ENABLE as string !== 'false';
 export const ZKSYNC_ACCOUNT = getParamOrExitExcept("ZKSYNC_ACCOUNT", ZKSYNC_TASK_ENABLE);
@@ -131,6 +145,8 @@ export const EVMChain2RPC = new Map<string,string>([
   //[EVMChainType.STARKNET, STARKNET_ENDPOINT_URL],
   [EVMChainType.POLYGONZK, POLYGONZK_ENDPOINT_URL],
   [EVMChainType.POLYGON, POLYGON_ENDPOINT_URL],
+  [EVMChainType.BASE, BASE_ENDPOINT_URL],
+  [EVMChainType.BLAST, BLAST_ENDPOINT_URL],
 ]);
 
 export const TRYOUT = 10;
