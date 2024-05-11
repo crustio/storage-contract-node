@@ -52,6 +52,7 @@ export enum EVMChainType {
   POLYGON = 'polygon',
   BASE = 'base',
   BLAST = 'blast',
+  PARA = 'para',
 };
 
 export const EVMChain2Token = new Map<string,string>([
@@ -64,6 +65,7 @@ export const EVMChain2Token = new Map<string,string>([
   [EVMChainType.POLYGON, 'matic'],
   [EVMChainType.BASE, 'eth'],
   [EVMChainType.BLAST, 'eth'],
+  [EVMChainType.PARA, 'eth'],
 ]);
 
 export const CRUST_SEEDS = getParamOrExit("CRUST_SEEDS");
@@ -95,6 +97,11 @@ export const BLAST_TASK_ENABLE = process.env.BLAST_TASK_ENABLE as string !== 'fa
 export const BLAST_ACCOUNT = getParamOrExitExcept("BLAST_ACCOUNT", BLAST_TASK_ENABLE);
 export const BLAST_ENDPOINT_URL = getParamOrExitExcept("BLAST_ENDPOINT_URL", BLAST_TASK_ENABLE);
 export const BLAST_STORAGE_CONTRACT_ADDRESS = getParamOrExitExcept("BLAST_STORAGE_CONTRACT_ADDRESS", BLAST_TASK_ENABLE);
+
+export const PARA_CHAIN_TASK_ENABLE = process.env.PARA_CHAIN_TASK_ENABLE as string !== 'false';
+export const PARA_CHAIN_ACCOUNT = getParamOrExitExcept("PARA_CHAIN_ACCOUNT", PARA_CHAIN_TASK_ENABLE);
+export const PARA_CHAIN_ENDPOINT_URL = getParamOrExitExcept("PARA_CHAIN_ENDPOINT_URL", PARA_CHAIN_TASK_ENABLE);
+export const PARA_CHAIN_STORAGE_CONTRACT_ADDRESS = getParamOrExitExcept("PARA_CHAIN_STORAGE_CONTRACT_ADDRESS", PARA_CHAIN_TASK_ENABLE);
 
 export const ZKSYNC_TASK_ENABLE = process.env.ZKSYNC_TASK_ENABLE as string !== 'false';
 export const ZKSYNC_ACCOUNT = getParamOrExitExcept("ZKSYNC_ACCOUNT", ZKSYNC_TASK_ENABLE);
@@ -147,6 +154,7 @@ export const EVMChain2RPC = new Map<string,string>([
   [EVMChainType.POLYGON, POLYGON_ENDPOINT_URL],
   [EVMChainType.BASE, BASE_ENDPOINT_URL],
   [EVMChainType.BLAST, BLAST_ENDPOINT_URL],
+  [EVMChainType.PARA, PARA_CHAIN_ENDPOINT_URL],
 ]);
 
 export const TRYOUT = 10;

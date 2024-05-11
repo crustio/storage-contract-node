@@ -17,6 +17,7 @@ import { createMonitorAlgorandTask } from "./monitor-algorand";
 import * as config from "../consts";
 import {createMonitorBaseTask} from "./monitor-base";
 import {createMonitorBlastTask} from "./monitor-blast";
+import {createMonitorParaChainTask} from "./monitor-parachain";
 
 export function loadTasks(
   context: AppContext
@@ -38,6 +39,7 @@ export function loadTasks(
     config.ALGO_TASK_ENABLE ? createMonitorAlgorandTask : null,
     config.BASE_TASK_ENABLE ? createMonitorBaseTask : null,
     config.BLAST_TASK_ENABLE ? createMonitorBlastTask : null,
+    config.PARA_CHAIN_TASK_ENABLE ? createMonitorParaChainTask : null,
   ];
   tasks = tasks.filter(n => n !== null );
   return Bluebird.mapSeries(tasks, (t: any) => {
