@@ -27,6 +27,18 @@ export function createRecordOperator(db: Database): DbOperator {
     timestamp: number,
   ): Promise<void> => {
     try {
+      logger.info(`Add ${chainType} task successfully.`);
+      logger.info(`  customer:${customer}`);
+      logger.info(`  merchant:${merchant}`);
+      logger.info(`  cid:${cid}`);
+      logger.info(`  size:${size}`);
+      logger.info(`  token:${token}`);
+      logger.info(`  price:${price}`);
+      logger.info(`  blockNumber:${blockNumber}`);
+      logger.info(`  isPermanent:${isPermanent}`);
+      logger.info(`  txHash:${txHash}`);
+      logger.info(`  timestamp:${timestamp}`);
+
       await db.run(
         'insert into record ' +
           '(`customer`, `merchant`, `cid`, `size`, `token`, `price`, `blockNumber`, `chainType`, `isPermanent`, `txHash`, `timestamp`, `tryout`, `status`)' +
@@ -47,15 +59,8 @@ export function createRecordOperator(db: Database): DbOperator {
           'new',
         ],
       );
-      logger.info(`Add ${chainType} task successfully.`);
-      logger.info(`  customer:${customer}`);
-      logger.info(`  merchant:${merchant}`);
-      logger.info(`  cid:${cid}`);
-      logger.info(`  size:${size}`);
-      logger.info(`  price:${price}`);
-      logger.info(`  token:${token}`);
-      logger.info(`  isPermanent:${isPermanent}`);
     } catch(e) {
+      logger.error(`Error in addRecord: ${e}`);
       const err_code = JSON.parse(JSON.stringify(e)).code;
       if (err_code !== 'SQLITE_CONSTRAINT') {
         throw e;

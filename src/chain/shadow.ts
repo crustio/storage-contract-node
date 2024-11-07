@@ -84,7 +84,7 @@ export class ShadowApi {
             tx.hash.toHex(),
             getTimestamp(),
           );
-          logger.info(`Get one file record from xstorage: ${cid}`);
+          logger.info(`Get one file record from xstorage at '${bn}': ${cid}`);
         }
       }
     }

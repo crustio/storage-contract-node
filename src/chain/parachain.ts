@@ -84,7 +84,7 @@ export class ParachainApi {
             tx.hash.toHex(),
             getTimestamp(),
           );
-          logger.info(`Get one file record from xstorage-para: ${cid}`);
+          logger.info(`Get one file record from xstorage-para at '${bn}': ${cid}`);
         }
       }
     }
