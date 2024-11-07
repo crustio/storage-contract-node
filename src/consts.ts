@@ -142,7 +142,9 @@ export const APTOS_NODE_URL = getParamOrExitExcept("APTOS_NODE_URL", APTOS_TASK_
 export const APTOS_ORDER_EVENTS_TAG = getParamOrExitExcept("APTOS_ORDER_EVENTS_TAG", APTOS_TASK_ENABLE);
 
 export const XSTORAGE_TASK_ENABLE = process.env.XSTORAGE_TASK_ENABLE as string !== 'false';
+export const XSTORAGE_PARA_TASK_ENABLE = process.env.XSTORAGE_PARA_TASK_ENABLE as string !== 'false';
 export const SHADOW_ENDPOINT_URL = getParamOrExitExcept("SHADOW_ENDPOINT_URL", XSTORAGE_TASK_ENABLE);
+export const PARACHAIN_ENDPOINT_URL = getParamOrExitExcept("PARACHAIN_ENDPOINT_URL", XSTORAGE_PARA_TASK_ENABLE);
 
 export const EVMChain2RPC = new Map<string,string>([
   //[EVMChainType.ETHEREUM, ETH_ENDPOINT_URL],

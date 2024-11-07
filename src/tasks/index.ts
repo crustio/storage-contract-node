@@ -18,6 +18,7 @@ import * as config from "../consts";
 import {createMonitorBaseTask} from "./monitor-base";
 import {createMonitorBlastTask} from "./monitor-blast";
 import {createMonitorParaChainTask} from "./monitor-parachain";
+import { createMonitorXStorageParaTask } from './monitor-xstorage-para';
 
 export function loadTasks(
   context: AppContext
@@ -35,6 +36,7 @@ export function loadTasks(
     config.POLYGON_TASK_ENABLE ? createMonitorPOLYGONTask : null,
     config.ELROND_TASK_ENABLE ? createMonitorElrondTask : null,
     config.XSTORAGE_TASK_ENABLE ? createMonitorXStorageTask : null,
+    config.XSTORAGE_PARA_TASK_ENABLE ? createMonitorXStorageParaTask : null,
     config.APTOS_TASK_ENABLE ? createMonitorAptosTask : null,
     config.ALGO_TASK_ENABLE ? createMonitorAlgorandTask : null,
     config.BASE_TASK_ENABLE ? createMonitorBaseTask : null,

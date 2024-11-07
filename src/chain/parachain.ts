@@ -1,24 +1,24 @@
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { logger } from '../utils/logger';
 import { getTimestamp, formatError } from '../utils';
-import { SHADOW_ENDPOINT_URL } from '../consts';
+import { PARACHAIN_ENDPOINT_URL } from '../consts';
 import { AppContext } from '../types/context';
 import { createRecordOperator } from '../db/operator';
 import { typesBundleForPolkadot } from '@crustio/type-definitions';
-import { EventRecord, Extrinsic, Header } from '@polkadot/types/interfaces';
+import { Extrinsic, Header } from '@polkadot/types/interfaces';
 import { VoidFn } from '@polkadot/api/types';
 import Bluebird from 'bluebird';
 
-const STARTBN = 821850;
+const STARTBN = 4518450;
 
-export class ShadowApi {
+export class ParachainApi {
   private api: any = null;
   private subscribeFinalized: VoidFn = () => {};
   private latestBlkNum = 0;
 
   async initApi(ctx: AppContext) {
     this.api = new ApiPromise({
-      provider: new WsProvider(SHADOW_ENDPOINT_URL),
+      provider: new WsProvider(PARACHAIN_ENDPOINT_URL),
       typesBundle: typesBundleForPolkadot,
     });
     await this.api.isReadyOrError;
@@ -43,7 +43,7 @@ export class ShadowApi {
   async handleHeader(ctx: AppContext, b: Header) {
     if (this.latestBlkNum === 0) {
       const dbOps = createRecordOperator(ctx.database);
-      const tmpBn = await dbOps.getXStorageLatestBlkNum();
+      const tmpBn = await dbOps.getXStorageParaLatestBlkNum();
       this.latestBlkNum = Math.max(tmpBn, STARTBN);
     }
 
@@ -79,12 +79,12 @@ export class ShadowApi {
             'CRU',
             '0',
             bn,
-            "xstorage",
+            "xstorage-para",
             isPermanent,
             tx.hash.toHex(),
             getTimestamp(),
           );
-          logger.info(`Get one file record from xstorage: ${cid}`);
+          logger.info(`Get one file record from xstorage-para: ${cid}`);
         }
       }
     }

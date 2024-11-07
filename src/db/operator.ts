@@ -140,6 +140,17 @@ export function createRecordOperator(db: Database): DbOperator {
     return 0;
   };
 
+  const getXStorageParaLatestBlkNum = async (): Promise<number> => {
+    const records = await db.all(
+      'select id, blockNumber from record where chainType = ? order by blockNumber desc limit 1',
+      ["xstorage-para"],
+    );
+    if (records.length > 0) {
+      return records[0].blockNumber;
+    }
+    return 0;
+  };
+
   const getARB1LatestBlkNum = async (): Promise<number> => {
     const records = await db.all(
       'select id, blockNumber from record where chainType = ? order by blockNumber desc',
@@ -211,6 +222,7 @@ export function createRecordOperator(db: Database): DbOperator {
     getOrderedRecord,
     getElrondLatestTimestamp,
     getXStorageLatestBlkNum,
+    getXStorageParaLatestBlkNum,
     getARB1LatestBlkNum,
     getAptosStartSequenceNumber,
     getMonitorBlkNum,

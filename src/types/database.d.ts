@@ -61,6 +61,7 @@ export interface DbOperator {
   getOrderedRecord: () => Promise<Record[]>;
   getElrondLatestTimestamp: () => Promise<number>;
   getXStorageLatestBlkNum: () => Promise<number>;
+  getXStorageParaLatestBlkNum: () => Promise<number>;
   getARB1LatestBlkNum: () => Promise<number>;
   getAptosStartSequenceNumber: () => Promise<number>;
   syncToLatestBlock: () => Promise<any>;
