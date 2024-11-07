@@ -70,7 +70,7 @@ export class ParachainApi {
           const account = eJson.account;
           const cid = Buffer.from(eJson.cid.substr(2), 'hex').toString();
           const size = eJson.size;
-          const isPermanent = eJson.isPermanent;
+          const isPermanent = eJson.isPermanent ? true : false;
           await dbOps.addRecord(
             account,
             account,
@@ -84,7 +84,6 @@ export class ParachainApi {
             tx.hash.toHex(),
             getTimestamp(),
           );
-          logger.info(`Get one file record from xstorage-para at '${bn}': ${cid}`);
         }
       }
     }
