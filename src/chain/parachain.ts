@@ -9,7 +9,7 @@ import { Extrinsic, Header } from '@polkadot/types/interfaces';
 import { VoidFn } from '@polkadot/api/types';
 import Bluebird from 'bluebird';
 
-const STARTBN = 4518450;
+const STARTBN = 4518330;
 
 export class ParachainApi {
   private api: any = null;

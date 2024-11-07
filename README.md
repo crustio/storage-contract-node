@@ -64,6 +64,9 @@ ELROND_ACCOUNT=""
 SHADOW_ENDPOINT_URL="wss://rpc2-shadow.crust.network"
 SHADOW_SUBSCAN_URL="https://shadow.webapi.subscan.io"
 
+# 7.1 Xstorage-Para configure
+PARACHAIN_ENDPOINT_URL="wss://crust-parachain.crustapps.net"
+
 # 8. Aptos configure
 APTOS_NODE_URL="https://fullnode.mainnet.aptoslabs.com"
 APTOS_STORAGE_MODULE_ADDRESS="0x59c6f5359735a27beba04252ae5fee4fc9c6ec0b7e22dab9f5ed7173283c54d0"
