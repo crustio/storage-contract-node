@@ -19,6 +19,7 @@ import {createMonitorBaseTask} from "./monitor-base";
 import {createMonitorBlastTask} from "./monitor-blast";
 import {createMonitorParaChainTask} from "./monitor-parachain";
 import { createMonitorXStorageParaTask } from './monitor-xstorage-para';
+import {createMonitorU2UTask} from "./monitor-u2u";
 
 export function loadTasks(
   context: AppContext
@@ -41,6 +42,7 @@ export function loadTasks(
     config.ALGO_TASK_ENABLE ? createMonitorAlgorandTask : null,
     config.BASE_TASK_ENABLE ? createMonitorBaseTask : null,
     config.BLAST_TASK_ENABLE ? createMonitorBlastTask : null,
+    config.U2U_TASK_ENABLE ? createMonitorU2UTask : null,
     config.PARA_CHAIN_TASK_ENABLE ? createMonitorParaChainTask : null,
   ];
   tasks = tasks.filter(n => n !== null );

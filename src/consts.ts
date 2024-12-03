@@ -52,6 +52,7 @@ export enum EVMChainType {
   POLYGON = 'polygon',
   BASE = 'base',
   BLAST = 'blast',
+  U2U = 'u2u',
   PARA = 'para',
 };
 
@@ -66,6 +67,7 @@ export const EVMChain2Token = new Map<string,string>([
   [EVMChainType.BASE, 'eth'],
   [EVMChainType.BLAST, 'eth'],
   [EVMChainType.PARA, 'eth'],
+  [EVMChainType.U2U, 'eth'],
 ]);
 
 export const CRUST_SEEDS = getParamOrExit("CRUST_SEEDS");
@@ -97,6 +99,11 @@ export const BLAST_TASK_ENABLE = process.env.BLAST_TASK_ENABLE as string !== 'fa
 export const BLAST_ACCOUNT = getParamOrExitExcept("BLAST_ACCOUNT", BLAST_TASK_ENABLE);
 export const BLAST_ENDPOINT_URL = getParamOrExitExcept("BLAST_ENDPOINT_URL", BLAST_TASK_ENABLE);
 export const BLAST_STORAGE_CONTRACT_ADDRESS = getParamOrExitExcept("BLAST_STORAGE_CONTRACT_ADDRESS", BLAST_TASK_ENABLE);
+
+export const U2U_TASK_ENABLE = process.env.U2U_TASK_ENABLE as string !== 'false';
+export const U2U_ACCOUNT = getParamOrExitExcept("U2U_ACCOUNT", U2U_TASK_ENABLE);
+export const U2U_ENDPOINT_URL = getParamOrExitExcept("U2U_ENDPOINT_URL", U2U_TASK_ENABLE);
+export const U2U_STORAGE_CONTRACT_ADDRESS = getParamOrExitExcept("U2U_STORAGE_CONTRACT_ADDRESS", U2U_TASK_ENABLE);
 
 export const PARA_CHAIN_TASK_ENABLE = process.env.PARA_CHAIN_TASK_ENABLE as string !== 'false';
 export const PARA_CHAIN_ACCOUNT = getParamOrExitExcept("PARA_CHAIN_ACCOUNT", PARA_CHAIN_TASK_ENABLE);
@@ -157,6 +164,7 @@ export const EVMChain2RPC = new Map<string,string>([
   [EVMChainType.BASE, BASE_ENDPOINT_URL],
   [EVMChainType.BLAST, BLAST_ENDPOINT_URL],
   [EVMChainType.PARA, PARA_CHAIN_ENDPOINT_URL],
+  [EVMChainType.U2U, U2U_ENDPOINT_URL],
 ]);
 
 export const TRYOUT = 10;
