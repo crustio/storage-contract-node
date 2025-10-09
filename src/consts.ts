@@ -54,6 +54,7 @@ export enum EVMChainType {
   BLAST = 'blast',
   U2U = 'u2u',
   PARA = 'para',
+  HEDERA = 'hedera',
 };
 
 export const EVMChain2Token = new Map<string,string>([
@@ -68,6 +69,7 @@ export const EVMChain2Token = new Map<string,string>([
   [EVMChainType.BLAST, 'eth'],
   [EVMChainType.PARA, 'eth'],
   [EVMChainType.U2U, 'eth'],
+  [EVMChainType.HEDERA, 'eth'],
 ]);
 
 export const CRUST_SEEDS = getParamOrExit("CRUST_SEEDS");
@@ -148,6 +150,11 @@ export const APTOS_STORAGE_MODULE_ADDRESS = getParamOrExitExcept("APTOS_STORAGE_
 export const APTOS_NODE_URL = getParamOrExitExcept("APTOS_NODE_URL", APTOS_TASK_ENABLE);
 export const APTOS_ORDER_EVENTS_TAG = getParamOrExitExcept("APTOS_ORDER_EVENTS_TAG", APTOS_TASK_ENABLE);
 
+export const HEDERA_TASK_ENABLE = process.env.HEDERA_TASK_ENABLE as string !== 'false';
+export const HEDERA_ACCOUNT = getParamOrExitExcept("HEDERA_ACCOUNT", HEDERA_TASK_ENABLE);
+export const HEDERA_ENDPOINT_URL = getParamOrExitExcept("HEDERA_ENDPOINT_URL", HEDERA_TASK_ENABLE);
+export const HEDERA_STORAGE_CONTRACT_ADDRESS = getParamOrExitExcept("HEDERA_STORAGE_CONTRACT_ADDRESS", HEDERA_TASK_ENABLE);
+
 export const XSTORAGE_TASK_ENABLE = process.env.XSTORAGE_TASK_ENABLE as string !== 'false';
 export const XSTORAGE_PARA_TASK_ENABLE = process.env.XSTORAGE_PARA_TASK_ENABLE as string !== 'false';
 export const SHADOW_ENDPOINT_URL = getParamOrExitExcept("SHADOW_ENDPOINT_URL", XSTORAGE_TASK_ENABLE);
@@ -165,6 +172,7 @@ export const EVMChain2RPC = new Map<string,string>([
   [EVMChainType.BLAST, BLAST_ENDPOINT_URL],
   [EVMChainType.PARA, PARA_CHAIN_ENDPOINT_URL],
   [EVMChainType.U2U, U2U_ENDPOINT_URL],
+  [EVMChainType.HEDERA, HEDERA_ENDPOINT_URL],
 ]);
 
 export const TRYOUT = 10;

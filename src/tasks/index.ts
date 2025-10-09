@@ -20,6 +20,7 @@ import {createMonitorBlastTask} from "./monitor-blast";
 import {createMonitorParaChainTask} from "./monitor-parachain";
 import { createMonitorXStorageParaTask } from './monitor-xstorage-para';
 import {createMonitorU2UTask} from "./monitor-u2u";
+import { createMonitorHederaTask } from './monitor-hedera';
 
 export function loadTasks(
   context: AppContext
@@ -44,6 +45,7 @@ export function loadTasks(
     config.BLAST_TASK_ENABLE ? createMonitorBlastTask : null,
     config.U2U_TASK_ENABLE ? createMonitorU2UTask : null,
     config.PARA_CHAIN_TASK_ENABLE ? createMonitorParaChainTask : null,
+    config.HEDERA_TASK_ENABLE ? createMonitorHederaTask : null,
   ];
   tasks = tasks.filter(n => n !== null );
   return Bluebird.mapSeries(tasks, (t: any) => {
